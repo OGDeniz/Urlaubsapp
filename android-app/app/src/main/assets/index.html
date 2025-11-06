@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Urlaubs_Countdown & Packliste</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <section class="hero" aria-labelledby="hero-title">
+        <div class="hero__overlay"></div>
+        <div class="hero__content">
+            <span class="hero__eyebrow">Costa Brava, Spanien</span>
+            <h1 id="hero-title">Pineda de Mar</h1>
+            <p>Pläne schmieden, Sonne tanken und schon jetzt die Meeresbrise spüren.</p>
+        </div>
+    </section>
+    <main class="container">
+        <header class="header">
+            <h2>Urlaubs-Countdown & Packliste</h2>
+            <p>Willkommen zu Ihrem ultimativen Urlaubs-Countdown und Packlisten-Generator! </p>
+            <p class="sub">Alles im Blick - auch Offline.</p>
+        </header>
+
+        <!-- Countdown Section -->
+         <section class="card">
+            <h2>Countdown</h2>
+            <form id="date-form" class="row">
+                <label for="tripDate">Abreisedatum:</label>
+                <input type="date" id="tripDate" name="tripDate" required>
+                <label for="tripTime">Abflugzeit:</label>
+                <input type="time" id="tripTime" name="tripTime" required>
+                <button type="submit">Countdown starten</button>
+            </form>
+            <div id="countdown" class="countdown">
+                <div class="cd-item"><span id="cd-days">0</span>Tage</div>
+                <div class="cd-item"><span id="cd-hours">0</span>Std</div>
+                <div class="cd-item"><span id="cd-mins">0</span>Min</div>
+                <div class="cd-item"><span id="cd-secs">0</span>Sek</div>
+            </div>
+            <p id="countdown-note" class="note"></p>
+         </section>
+
+        <!-- Packing List Section -->
+        <section class="card">
+            <h2>Packliste</h2>
+            <form id="add-form" class="row">
+                <label for="itemInput" class="sr-only">Neuer Gegenstand</label>
+                <input type="text" id="itemInput" placeholder="z.B. Sonnencreme" />
+                <button type="submit">Hinzufügen</button>
+            </form>
+
+            <div class="list-controls">
+                <button id="btn-check-all" class="ghost">Alle abhacken</button>
+                <button id="btn-uncheck-all" class="ghost">Alle zurücksetzen</button>
+                <button id="btn-clear" class="danger">Liste leeren</button>
+            </div>
+
+            <ul id="list" class="list" aria-live="polite"></ul>
+        </section>
+        
+        <footer class="footer">
+            <small>Speichert lokal im Browser (localStorage). Keine Datenübertragung</small>
+        </footer>
+    </main>
+
+    <script src="app.js" defer></script> 
+</body>
+</html>
