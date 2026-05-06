@@ -346,8 +346,19 @@ input[type="file"]{
 .doc-item .delete:hover{ border-color:var(--danger); color:var(--danger); }
 
 @media(max-width:600px){
-  .doc-item{ flex-wrap:wrap; }
-  .doc-download{ font-size:12px; padding:8px 10px; }
+  .doc-item{
+    flex-wrap:wrap;
+    gap:8px;
+  }
+  .doc-info{
+    order:-1;
+    width:100%;
+  }
+  .doc-download{
+    font-size:12px;
+    padding:8px 10px;
+    margin-left:auto;
+  }
 }
 
 .footer{ text-align:center; color:rgba(74,101,114,0.8); margin-top:20px; font-size:14px; }
@@ -368,6 +379,7 @@ input[type="file"]{
   .card{ padding:20px; }
   input[type="date"],
   input[type="time"],
-  input[type="text"]{ min-width:100%; }
+  input[type="text"],
+  select{ min-width:100%; }
   .countdown{ gap:10px; }
 }
