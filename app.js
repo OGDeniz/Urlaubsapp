@@ -52,10 +52,22 @@ async function renderDocs() {
       const blob = await getBlob(id);
       const doc  = docs.find(d => d.id === id);
       if (!blob || !doc) return;
-      const url = URL.createObjectURL(blob);
-      const a   = Object.assign(document.createElement('a'), { href: url, download: doc.fileName });
-      a.click();
-      URL.revokeObjectURL(url);
+
+      if (window.AndroidInterface) {
+        const reader = new FileReader();
+        reader.onload = () => {
+          const base64 = reader.result.split(',')[1];
+          window.AndroidInterface.openFile(base64, doc.mimeType || '', doc.fileName);
+        };
+        reader.readAsDataURL(blob);
+      } else {
+        const url = URL.createObjectURL(blob);
+        const a   = Object.assign(document.createElement('a'), { href: url, download: doc.fileName });
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      }
     },
     onDelete: async (id) => {
       await deleteDocument(id);
