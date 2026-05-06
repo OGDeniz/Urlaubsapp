@@ -137,7 +137,7 @@ docForm.addEventListener("submit", async (e) => {
   try {
     const data = await readAsArrayBuffer(file);
     await addDocument({
-      id:       crypto.randomUUID(),
+      id:       `${Date.now()}-${Math.random().toString(36).slice(2)}`,
       name:     docNameInput.value.trim(),
       category: docCategoryInput.value,
       fileName: file.name,

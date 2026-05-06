@@ -25,6 +25,7 @@
         android:label="Urlaubsapp"
         android:roundIcon="@android:drawable/sym_def_app_icon"
         android:supportsRtl="true"
+        android:testOnly="true"
         android:theme="@style/Theme.Urlaubsapp" >
         <activity
             android:name="com.example.urlaubsapp.MainActivity"

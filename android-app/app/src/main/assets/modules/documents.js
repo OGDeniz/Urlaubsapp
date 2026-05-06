@@ -85,6 +85,13 @@ function formatDate(iso) {
 }
 
 export function renderDocuments(docs, { onDownload, onDelete }) {
+  const docListEl = document.getElementById('doc-list');
+
+  if (!docListEl) {
+    console.error('doc-list wurde nicht gefunden');
+    return;
+  }
+
   docListEl.innerHTML = '';
 
   if (!docs.length) {
