@@ -112,7 +112,7 @@ export function renderDocuments(docs, { onDownload, onDelete }) {
 
     const meta = document.createElement('span');
     meta.className = 'doc-meta';
-    meta.textContent = `${doc.fileName} · ${formatSize(doc.size)} · ${formatDate(doc.addedAt)}`;
+    meta.textContent = `${formatSize(doc.size)} · ${formatDate(doc.addedAt)}`;
 
     const dlBtn = document.createElement('button');
     dlBtn.className = 'ghost doc-download';
