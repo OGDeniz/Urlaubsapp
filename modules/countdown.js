@@ -1,8 +1,8 @@
-const cdDays  = document.getElementById("cd-days");
-const cdHours = document.getElementById("cd-hours");
-const cdMins  = document.getElementById("cd-mins");
-const cdSecs  = document.getElementById("cd-secs");
-const countdownNote = document.getElementById("countdown-note");
+const cdDays  = document.getElementById("cd-days"); // variable für die Tage im Countdown, wird mit getElementById aus dem HTML-Dokument geholt
+const cdHours = document.getElementById("cd-hours"); // variable für die Stunden im Countdown
+const cdMins  = document.getElementById("cd-mins"); // variable für die Minuten im Countdown
+const cdSecs  = document.getElementById("cd-secs"); // variable für die Sekunden im Countdown
+const countdownNote = document.getElementById("countdown-note"); // variable für die Notiz unter dem Countdown
 
 const pad = (n) => String(n).padStart(2, "0");
 

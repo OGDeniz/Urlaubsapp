@@ -2,20 +2,27 @@ import { save, load }                                              from './modul
 import { startCountdown }                                          from './modules/countdown.js';
 import { renderList, addItem, toggleItem, removeItem,
          reorderItems }                                            from './modules/list.js';
+import { initDB, addDocument, getAllDocuments,
+         getBlob, deleteDocument, renderDocuments }               from './modules/documents.js';
 
 // ---- Elements
-const tripDateInput = document.getElementById("tripDate");
-const tripTimeInput = document.getElementById("tripTime");
-const dateForm      = document.getElementById("date-form");
-const addForm       = document.getElementById("add-form");
-const itemInput     = document.getElementById("itemInput");
-const btnCheckAll   = document.getElementById("btn-check-all");
-const btnUncheckAll = document.getElementById("btn-uncheck-all");
-const btnClear      = document.getElementById("btn-clear");
+const tripDateInput    = document.getElementById("tripDate");
+const tripTimeInput    = document.getElementById("tripTime");
+const dateForm         = document.getElementById("date-form");
+const addForm          = document.getElementById("add-form");
+const itemInput        = document.getElementById("itemInput");
+const btnCheckAll      = document.getElementById("btn-check-all");
+const btnUncheckAll    = document.getElementById("btn-uncheck-all");
+const btnClear         = document.getElementById("btn-clear");
+const docForm          = document.getElementById("doc-form");
+const docNameInput     = document.getElementById("docName");
+const docCategoryInput = document.getElementById("docCategory");
+const docFileInput     = document.getElementById("docFile");
 
 // ---- State
 let tripDate = null;
 let items    = [];
+let docs     = [];
 
 // ---- Render
 function render() {
@@ -34,6 +41,25 @@ function render() {
       items = reorderItems(items, sourceId, targetId, placeAfter);
       save(tripDate, items);
       render();
+    },
+  });
+}
+
+async function renderDocs() {
+  docs = await getAllDocuments();
+  renderDocuments(docs, {
+    onDownload: async (id) => {
+      const blob = await getBlob(id);
+      const doc  = docs.find(d => d.id === id);
+      if (!blob || !doc) return;
+      const url = URL.createObjectURL(blob);
+      const a   = Object.assign(document.createElement('a'), { href: url, download: doc.fileName });
+      a.click();
+      URL.revokeObjectURL(url);
+    },
+    onDelete: async (id) => {
+      await deleteDocument(id);
+      renderDocs();
     },
   });
 }
@@ -95,9 +121,42 @@ btnClear.addEventListener("click", () => {
   }
 });
 
+function readAsArrayBuffer(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload  = () => resolve(reader.result);
+    reader.onerror = () => reject(reader.error);
+    reader.readAsArrayBuffer(file);
+  });
+}
+
+docForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const file = docFileInput.files[0];
+  if (!file) return;
+  try {
+    const data = await readAsArrayBuffer(file);
+    await addDocument({
+      id:       crypto.randomUUID(),
+      name:     docNameInput.value.trim(),
+      category: docCategoryInput.value,
+      fileName: file.name,
+      mimeType: file.type,
+      size:     file.size,
+      addedAt:  new Date().toISOString(),
+      data,
+    });
+    docForm.reset();
+    await renderDocs();
+  } catch (err) {
+    alert(`Dokument konnte nicht gespeichert werden: ${err.message}`);
+  }
+});
+
 // ---- Init
-(function init() {
+(async function init() {
   ({ tripDate, items } = load());
+  await initDB();
 
   if (tripDate instanceof Date && !isNaN(tripDate)) {
     const yyyy = tripDate.getFullYear();
@@ -115,4 +174,5 @@ btnClear.addEventListener("click", () => {
   }
 
   render();
+  await renderDocs();
 })();

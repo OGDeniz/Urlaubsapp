@@ -11,8 +11,8 @@
         <div class="hero__overlay"></div>
         <div class="hero__content">
             <span class="hero__eyebrow">Your Journey</span>
-            <h1 id="hero-title">Pineda de Mar</h1>
-            <p>Pläne schmieden, Sonne tanken und schon jetzt die Meeresbrise spüren.</p>
+            <h1 id="hero-title">Mein Urlaub</h1>
+            <p>Pläne schmieden, Vorfreude genießen und bestens vorbereitet in den Urlaub starten.</p>
         </div>
     </section>
     <main class="container">
@@ -59,6 +59,22 @@
             <ul id="list" class="list" aria-live="polite"></ul>
         </section>
         
+        <!-- Dokumente Section -->
+        <section class="card">
+            <h2>Reise-Dokumente</h2>
+            <form id="doc-form" class="row">
+                <input type="text" id="docName" placeholder="z.B. Flugticket Hinflug" required>
+                <select id="docCategory">
+                    <option value="flugticket">✈ Flugticket</option>
+                    <option value="unterkunft">🏨 Unterkunft</option>
+                    <option value="sonstiges">📄 Sonstiges</option>
+                </select>
+                <input type="file" id="docFile" accept=".pdf,image/*" required>
+                <button type="submit">Hinzufügen</button>
+            </form>
+            <ul id="doc-list" class="list" aria-live="polite"></ul>
+        </section>
+
         <footer class="footer">
             <small>Speichert lokal im Browser (localStorage). Keine Datenübertragung</small>
         </footer>
