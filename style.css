@@ -17,6 +17,7 @@ body{
   margin:0;
   min-height:100%;
   font-family:'Poppins','Segoe UI','Roboto',sans-serif;
+  -webkit-font-smoothing:antialiased;
   color:var(--text);
   line-height:1.6;
   background:
@@ -144,6 +145,7 @@ button{
   border:none;
   border-radius:14px;
   padding:12px 18px;
+  min-height:44px;
   cursor:pointer;
   transition: transform .15s ease, box-shadow .2s ease, filter .2s ease;
   box-shadow:0 14px 22px rgba(255,138,92,0.35);
@@ -172,13 +174,14 @@ button.danger{
   border:1px solid rgba(21,50,67,0.12);
   padding:16px 18px;
   border-radius:16px;
-  min-width:100px;
+  flex:1;
+  min-width:80px;
   text-align:center;
   box-shadow:0 12px 24px rgba(21,50,67,0.1);
 }
 .cd-item span{
   display:block;
-  font-size:30px;
+  font-size:38px;
   font-weight:700;
   color:var(--accent-2);
   text-shadow:0 8px 18px rgba(8,199,190,0.2);
@@ -389,8 +392,14 @@ input[type="file"]{
   margin-bottom:-2px;
   font-size:14px;
   font-weight:600;
+  display:flex;
+  align-items:center;
+  gap:6px;
+  min-height:auto;
   transition:background .2s ease, color .2s ease, border-color .2s ease;
 }
+.tab-icon{ font-size:16px; line-height:1; }
+.tab-label{ font-size:14px; }
 .tab-btn:hover{
   background:rgba(255,255,255,0.6);
   color:var(--text);
@@ -405,7 +414,14 @@ input[type="file"]{
 }
 
 .tab-panel{ display:none; margin-top:24px; }
-.tab-panel.active{ display:block; }
+.tab-panel.active{
+  display:block;
+  animation:fadeInUp 0.2s ease;
+}
+@keyframes fadeInUp{
+  from{ opacity:0; transform:translateY(8px); }
+  to  { opacity:1; transform:translateY(0);   }
+}
 
 /* ---- POI / Entdecken ---- */
 .chip-row{ display:flex; gap:8px; flex-wrap:wrap; margin:16px 0 8px; }
@@ -459,12 +475,101 @@ input[type="file"]{
   border:0;
 }
 
-@media (max-width:600px){
-  .header h1{ font-size:34px; }
-  .card{ padding:20px; }
+/* ---- Mobile: Bottom-Navigation + Layout ---- */
+@media (max-width:768px){
+
+  /* Bottom Nav */
+  .tabs{
+    position:fixed;
+    bottom:0; left:0; right:0;
+    z-index:200;
+    background:rgba(255,255,255,0.97);
+    backdrop-filter:blur(14px);
+    -webkit-backdrop-filter:blur(14px);
+    border-top:1px solid var(--border);
+    border-bottom:none;
+    border-radius:0;
+    padding:6px 4px calc(6px + env(safe-area-inset-bottom));
+    gap:0;
+    justify-content:space-around;
+    flex-wrap:nowrap;
+    margin-bottom:0;
+  }
+  .tab-btn{
+    flex:1;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:2px;
+    padding:6px 2px;
+    border-radius:12px;
+    border:none;
+    margin-bottom:0;
+    min-width:0;
+    min-height:auto;
+    color:var(--muted);
+  }
+  .tab-btn:hover{ background:transparent; transform:none; filter:none; }
+  .tab-btn.active{
+    background:rgba(8,199,190,0.12);
+    color:#055c57;
+    border-color:transparent;
+    border-bottom-color:transparent;
+  }
+  .tab-icon{ font-size:22px; line-height:1; }
+  .tab-label{ font-size:10px; font-weight:600; }
+
+  /* Platz für Fixed Bottom Nav */
+  .container{
+    margin:16px auto 0;
+    padding:0 12px;
+    padding-bottom:calc(80px + env(safe-area-inset-bottom));
+  }
+
+  /* Hero kompakt */
+  .hero{
+    min-height:160px;
+    padding:36px 16px 28px;
+  }
+  .hero__content h1{ font-size:28px; letter-spacing:1px; }
+  .hero__content p { font-size:14px; }
+  .hero__eyebrow{ font-size:11px; padding:4px 10px; }
+
+  /* Header ausblenden (Platz sparen) */
+  .header{ display:none; }
+
+  /* Cards */
+  .card{ border-radius:16px; padding:16px; margin-bottom:14px; }
+
+  /* Inputs + Selects – full width */
+  .row{ flex-direction:column; gap:10px; }
   input[type="date"],
   input[type="time"],
   input[type="text"],
-  select{ min-width:100%; }
-  .countdown{ gap:10px; }
+  select{ min-width:100%; width:100%; }
+
+  /* Buttons – full width (Ausnahmen unten) */
+  button{ width:100%; justify-content:center; }
+  .list-controls button{ width:auto; }
+  .item .delete,
+  .doc-item .delete,
+  .drag-handle{ width:auto; min-width:36px; }
+  .chip{ width:auto; }
+
+  /* Countdown */
+  .countdown{ gap:8px; }
+  .cd-item{ padding:12px 8px; font-size:11px; }
+  .cd-item span{ font-size:30px; }
+
+  /* Map */
+  #map{ height:280px; }
+
+  /* POI Cards */
+  .poi-card{ flex-wrap:wrap; }
+  .poi-info{ width:100%; }
+
+  /* Dokumente */
+  .doc-item{ flex-wrap:wrap; gap:8px; }
+  .doc-info{ order:-1; width:100%; }
+  .doc-download{ font-size:12px; padding:8px 10px; margin-left:auto; width:auto; }
 }

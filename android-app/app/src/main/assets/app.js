@@ -274,6 +274,60 @@ async function loadPOIs(categoryKey, chipBtn) {
   }, savedIds);
 }
 
+// ---- Gespeicherte Orte
+function renderSavedPlaces() {
+  const list = document.getElementById('saved-list');
+  const places = currentTrip.savedPlaces || [];
+  list.innerHTML = '';
+
+  if (!places.length) {
+    const li = document.createElement('li');
+    li.className = 'poi-card';
+    li.textContent = 'Noch keine Orte gespeichert.';
+    list.appendChild(li);
+    return;
+  }
+
+  places.forEach(place => {
+    const li = document.createElement('li');
+    li.className = 'poi-card';
+
+    const info = document.createElement('div');
+    info.className = 'poi-info';
+    const name = document.createElement('div');
+    name.className = 'poi-name';
+    name.textContent = place.name;
+    const meta = document.createElement('div');
+    meta.className = 'poi-meta';
+    meta.textContent = `${CATEGORIES[place.category]?.label ?? place.category} · ${place.distance} m`;
+    info.appendChild(name);
+    info.appendChild(meta);
+
+    const showBtn = document.createElement('button');
+    showBtn.className = 'ghost';
+    showBtn.textContent = '📍 Auf Karte';
+    showBtn.addEventListener('click', () => {
+      document.querySelector('[data-target="tab-map"]').click();
+      setTimeout(() => showPlaceOnMap(place), 150);
+    });
+
+    const removeBtn = document.createElement('button');
+    removeBtn.className = 'danger';
+    removeBtn.textContent = '🗑 Entfernen';
+    removeBtn.addEventListener('click', () => {
+      currentTrip = updateTrip({
+        savedPlaces: (currentTrip.savedPlaces || []).filter(p => p.id !== place.id),
+      });
+      renderSavedPlaces();
+    });
+
+    li.appendChild(info);
+    li.appendChild(showBtn);
+    li.appendChild(removeBtn);
+    list.appendChild(li);
+  });
+}
+
 // ---- Tabs
 document.querySelectorAll('.tab-btn').forEach(btn => {
   btn.addEventListener('click', () => {
@@ -289,6 +343,9 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
       initMap();
       showAccommodationOnMap(currentTrip.accommodation);
       renderCategoryChips();
+    }
+    if (btn.dataset.target === 'tab-saved') {
+      renderSavedPlaces();
     }
   });
 });

@@ -7,6 +7,7 @@ export const CATEGORIES = {
   supermarket: { label: '🛒 Supermarkt', key: 'shop',     val: 'supermarket' },
   bus_stop:    { label: '🚇 ÖPNV',       key: 'highway',  val: 'bus_stop'    },
   pharmacy:    { label: '💊 Apotheke',   key: 'amenity',  val: 'pharmacy'    },
+  bar:         { label: '🍺 Bars',       key: 'amenity',  val: 'bar'         },
 };
 
 function haversineMeters(lat1, lng1, lat2, lng2) {

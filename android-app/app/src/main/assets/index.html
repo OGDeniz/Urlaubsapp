@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Urlaubs_Countdown & Packliste</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="theme-color" content="#08c7be">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 </head>
@@ -26,11 +30,30 @@
         </header>
 
         <nav class="tabs" role="tablist">
-            <button class="tab-btn active" data-target="tab-countdown" role="tab" aria-selected="true">⏳ Countdown</button>
-            <button class="tab-btn" data-target="tab-packliste" role="tab" aria-selected="false">📋 Packliste</button>
-            <button class="tab-btn" data-target="tab-dokumente" role="tab" aria-selected="false">📄 Dokumente</button>
-            <button class="tab-btn" data-target="tab-reise" role="tab" aria-selected="false">🧳 Reise</button>
-            <button class="tab-btn" data-target="tab-map">🗺 Karte</button>
+            <button class="tab-btn active" data-target="tab-countdown" role="tab" aria-selected="true">
+                <span class="tab-icon" aria-hidden="true">⏳</span>
+                <span class="tab-label">Countdown</span>
+            </button>
+            <button class="tab-btn" data-target="tab-packliste" role="tab" aria-selected="false">
+                <span class="tab-icon" aria-hidden="true">📋</span>
+                <span class="tab-label">Packliste</span>
+            </button>
+            <button class="tab-btn" data-target="tab-dokumente" role="tab" aria-selected="false">
+                <span class="tab-icon" aria-hidden="true">📄</span>
+                <span class="tab-label">Dokumente</span>
+            </button>
+            <button class="tab-btn" data-target="tab-reise" role="tab" aria-selected="false">
+                <span class="tab-icon" aria-hidden="true">🧳</span>
+                <span class="tab-label">Reise</span>
+            </button>
+            <button class="tab-btn" data-target="tab-map">
+                <span class="tab-icon" aria-hidden="true">🗺</span>
+                <span class="tab-label">Karte</span>
+            </button>
+            <button class="tab-btn" data-target="tab-saved">
+                <span class="tab-icon" aria-hidden="true">❤️</span>
+                <span class="tab-label">Gespeichert</span>
+            </button>
         </nav>
 
         <!-- Reise Section -->
@@ -111,6 +134,12 @@
             <div id="poi-categories" class="chip-row"></div>
             <div id="poi-loading" class="poi-loading" hidden>Lädt…</div>
             <ul id="poi-results" class="poi-list"></ul>
+        </section>
+
+        <!-- Gespeicherte Orte Section -->
+        <section class="card tab-panel" id="tab-saved">
+            <h2>Gespeicherte Orte</h2>
+            <ul id="saved-list" class="poi-list" aria-live="polite"></ul>
         </section>
 
         <!-- Dokumente Section -->
