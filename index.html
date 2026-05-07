@@ -22,8 +22,14 @@
             <p class="sub">Alles im Blick - auch Offline.</p>
         </header>
 
+        <nav class="tabs" role="tablist">
+            <button class="tab-btn active" data-target="tab-countdown" role="tab" aria-selected="true">⏳ Countdown</button>
+            <button class="tab-btn" data-target="tab-packliste" role="tab" aria-selected="false">📋 Packliste</button>
+            <button class="tab-btn" data-target="tab-dokumente" role="tab" aria-selected="false">📄 Dokumente</button>
+        </nav>
+
         <!-- Countdown Section -->
-         <section class="card">
+         <section class="card tab-panel active" id="tab-countdown">
             <h2>Countdown</h2>
             <form id="date-form" class="row">
                 <label for="tripDate">Abreisedatum:</label>
@@ -42,7 +48,7 @@
          </section>
 
         <!-- Packing List Section -->
-        <section class="card">
+        <section class="card tab-panel" id="tab-packliste">
             <h2>Packliste</h2>
             <form id="add-form" class="row">
                 <label for="itemInput" class="sr-only">Neuer Gegenstand</label>
@@ -60,7 +66,7 @@
         </section>
         
         <!-- Dokumente Section -->
-        <section class="card">
+        <section class="card tab-panel" id="tab-dokumente">
             <h2>Reise-Dokumente</h2>
             <form id="doc-form" class="row">
                 <input type="text" id="docName" placeholder="z.B. Flugticket Hinflug" required>
