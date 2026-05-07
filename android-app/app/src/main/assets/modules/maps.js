@@ -48,6 +48,16 @@ export function showAccommodationOnMap(accommodation) {
 
   map.setView(position, 14);
 }
+
+export function showPlaceOnMap(place) {
+  if (!map) return;
+  map.setView([place.lat, place.lng], 16);
+  L.marker([place.lat, place.lng])
+    .addTo(map)
+    .bindPopup(`<strong>${place.name}</strong>`)
+    .openPopup();
+}
+
 export async function geocodeAddress(address) {
   if (!address) return null;
 

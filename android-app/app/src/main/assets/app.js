@@ -6,7 +6,8 @@ import { initDB, addDocument, getAllDocuments,
          getBlob, deleteDocument, renderDocuments }               from './modules/documents.js';
 import { loadTrip, updateTrip }                                   from './modules/trip.js';
 import { Accommodation }                                          from './modules/accomodation.js';
-import { initMap, showAccommodationOnMap, geocodeAddress }                        from './modules/maps.js';
+import { initMap, showAccommodationOnMap, geocodeAddress, showPlaceOnMap } from './modules/maps.js';
+import { fetchPlaces, renderPlaces, CATEGORIES }                           from './modules/places.js';
 
 
 // ---- Elements
@@ -213,7 +214,7 @@ accommodationForm.addEventListener("submit", async (e) => {
 
   const address = accommodationAddressInput.value.trim();
 
-  const coordinates = await geocodeAddress(address);  
+  const coordinates = await geocodeAddress(address);
 
   currentAccommodation = new Accommodation({
   name: accommodationNameInput.value.trim(),
@@ -233,6 +234,46 @@ accommodationForm.addEventListener("submit", async (e) => {
   showAccommodationOnMap(currentTrip.accommodation);
 });
 
+// ---- POI
+function renderCategoryChips() {
+  const row = document.getElementById('poi-categories');
+  if (row.children.length) return;
+  Object.entries(CATEGORIES).forEach(([key, cat]) => {
+    const chip = document.createElement('button');
+    chip.className = 'chip';
+    chip.textContent = cat.label;
+    chip.addEventListener('click', () => loadPOIs(key, chip));
+    row.appendChild(chip);
+  });
+}
+
+async function loadPOIs(categoryKey, chipBtn) {
+  const acc = currentTrip.accommodation;
+  if (!acc?.lat) {
+    alert('Bitte zuerst eine Unterkunft mit Adresse speichern.');
+    return;
+  }
+  document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+  chipBtn.classList.add('active');
+
+  const loading = document.getElementById('poi-loading');
+  loading.hidden = false;
+  const places = await fetchPlaces(acc.lat, acc.lng, categoryKey);
+  loading.hidden = true;
+
+  const savedIds = (currentTrip.savedPlaces || []).map(p => p.id);
+  renderPlaces(places, {
+    onShow: (place) => showPlaceOnMap(place),
+    onSave: (place) => {
+      if (!(currentTrip.savedPlaces || []).find(p => p.id === place.id)) {
+        currentTrip = updateTrip({
+          savedPlaces: [...(currentTrip.savedPlaces || []), place],
+        });
+      }
+    },
+  }, savedIds);
+}
+
 // ---- Tabs
 document.querySelectorAll('.tab-btn').forEach(btn => {
   btn.addEventListener('click', () => {
@@ -247,6 +288,7 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
     if (btn.dataset.target === 'tab-map') {
       initMap();
       showAccommodationOnMap(currentTrip.accommodation);
+      renderCategoryChips();
     }
   });
 });

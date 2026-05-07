@@ -103,11 +103,14 @@
 
             <ul id="list" class="list" aria-live="polite"></ul>
         </section>
-        
+
         <!-- Karte Section -->
         <section class="card tab-panel" id="tab-map">
             <h2>Karte</h2>
             <div id="map" style="height: 400px;"></div>
+            <div id="poi-categories" class="chip-row"></div>
+            <div id="poi-loading" class="poi-loading" hidden>Lädt…</div>
+            <ul id="poi-results" class="poi-list"></ul>
         </section>
 
         <!-- Dokumente Section -->
@@ -129,8 +132,6 @@
         <footer class="footer">
             <small>Speichert lokal im Browser (localStorage). Keine Datenübertragung</small>
         </footer>
-
-
     </main>
 
     <script type="module" src="app.js"></script>
