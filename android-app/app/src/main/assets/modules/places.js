@@ -1,13 +1,36 @@
 export const CATEGORIES = {
-  attraction:  { label: '⭐ Must-See',   key: 'tourism',  val: 'attraction'  },
-  museum:      { label: '🏛 Museen',     key: 'tourism',  val: 'museum'      },
-  restaurant:  { label: '🍽 Essen',      key: 'amenity',  val: 'restaurant'  },
-  park:        { label: '🌳 Parks',      key: 'leisure',  val: 'park'        },
-  beach:       { label: '🏖 Strand',     key: 'natural',  val: 'beach'       },
-  supermarket: { label: '🛒 Supermarkt', key: 'shop',     val: 'supermarket' },
-  bus_stop:    { label: '🚇 ÖPNV',       key: 'highway',  val: 'bus_stop'    },
-  pharmacy:    { label: '💊 Apotheke',   key: 'amenity',  val: 'pharmacy'    },
-  bar:         { label: '🍺 Bars & Pubs', key: 'amenity',  val: 'bar|pub|biergarten|nightclub', regex: true },
+  attraction:  { label: '⭐ Must-See',    filters: [
+    { key: 'tourism',  val: 'attraction|viewpoint|artwork|zoo|theme_park|aquarium|gallery|miniature_golf', regex: true },
+    { key: 'historic', val: 'monument|memorial|castle|ruins|archaeological_site|building|fort|manor', regex: true },
+  ]},
+  museum:      { label: '🏛 Museen',      filters: [
+    { key: 'tourism',  val: 'museum|gallery', regex: true },
+  ]},
+  restaurant:  { label: '🍽 Essen',       filters: [
+    { key: 'amenity',  val: 'restaurant|cafe|fast_food|food_court|ice_cream', regex: true },
+    { key: 'shop',     val: 'bakery|pastry|deli', regex: true },
+  ]},
+  park:        { label: '🌳 Parks',       filters: [
+    { key: 'leisure',  val: 'park|garden|nature_reserve|recreation_ground|dog_park', regex: true },
+  ]},
+  beach:       { label: '🏖 Strand',      filters: [
+    { key: 'natural',  val: 'beach|sand', regex: true },
+    { key: 'leisure',  val: 'beach_resort|swimming_area', regex: true },
+  ]},
+  supermarket: { label: '🛒 Supermarkt',  filters: [
+    { key: 'shop',     val: 'supermarket|convenience|grocery|hypermarket|department_store|mall', regex: true },
+  ]},
+  bus_stop:    { label: '🚇 ÖPNV',        filters: [
+    { key: 'highway',  val: 'bus_stop' },
+    { key: 'railway',  val: 'station|tram_stop|halt|subway_entrance', regex: true },
+    { key: 'amenity',  val: 'ferry_terminal|bus_station', regex: true },
+  ]},
+  pharmacy:    { label: '💊 Gesundheit',  filters: [
+    { key: 'amenity',  val: 'pharmacy|hospital|clinic|doctors|dentist', regex: true },
+  ]},
+  bar:         { label: '🍺 Bars & Pubs', filters: [
+    { key: 'amenity',  val: 'bar|pub|biergarten|nightclub', regex: true },
+  ]},
 };
 
 function haversineMeters(lat1, lng1, lat2, lng2) {
@@ -25,15 +48,16 @@ export async function fetchPlaces(accLat, accLng, categoryKey, radius = 1500) {
   const cat = CATEGORIES[categoryKey];
   if (!cat) return [];
 
-  const selector = cat.regex
-    ? `["${cat.key}"~"^(${cat.val})$"]`
-    : `["${cat.key}"="${cat.val}"]`;
+  const geo = `(around:${radius},${accLat},${accLng})`;
+  const parts = cat.filters.map(f => {
+    const sel = f.regex ? `["${f.key}"~"^(${f.val})$"]` : `["${f.key}"="${f.val}"]`;
+    return `      node${sel}${geo};\n      way${sel}${geo};`;
+  }).join('\n');
 
   const query = `
     [out:json][timeout:15];
     (
-      node${selector}(around:${radius},${accLat},${accLng});
-      way${selector}(around:${radius},${accLat},${accLng});
+${parts}
     );
     out center 30;
   `;
