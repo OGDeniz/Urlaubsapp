@@ -5,7 +5,7 @@ import { renderList, addItem, toggleItem, removeItem,
 import { initDB, addDocument, getAllDocuments,
          getBlob, deleteDocument, renderDocuments }               from './modules/documents.js';
 import { loadTrip, updateTrip }                                   from './modules/trip.js';
-import { Accomodation }                                           from './modules/accomodation.js';
+import { Accommodation }                                          from './modules/accomodation.js';
 import { initMap, showAccommodationOnMap, geocodeAddress }                        from './modules/maps.js';
 
 
@@ -244,6 +244,10 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
     btn.classList.add('active');
     btn.setAttribute('aria-selected', 'true');
     document.getElementById(btn.dataset.target).classList.add('active');
+    if (btn.dataset.target === 'tab-map') {
+      initMap();
+      showAccommodationOnMap(currentTrip.accommodation);
+    }
   });
 });
 

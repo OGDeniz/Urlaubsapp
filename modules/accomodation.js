@@ -1,4 +1,4 @@
-export class Accomodation {
+export class Accommodation {
     constructor({
         name = "",
         type = "",
