@@ -3,24 +3,24 @@
 3    package="com.example.urlaubsapp.test" >
 4
 5    <uses-sdk
-5-->C:\Users\Teilnehmer\Downloads\Urlaubsapp\Urlaubsapp\android-app\app\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest6216782194359216875.xml:5:5-74
+5-->C:\Users\Teilnehmer\Downloads\Urlaubsapp\Urlaubsapp\android-app\app\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest5269446762151900315.xml:5:5-74
 6        android:minSdkVersion="24"
-6-->C:\Users\Teilnehmer\Downloads\Urlaubsapp\Urlaubsapp\android-app\app\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest6216782194359216875.xml:5:15-41
+6-->C:\Users\Teilnehmer\Downloads\Urlaubsapp\Urlaubsapp\android-app\app\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest5269446762151900315.xml:5:15-41
 7        android:targetSdkVersion="34" />
-7-->C:\Users\Teilnehmer\Downloads\Urlaubsapp\Urlaubsapp\android-app\app\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest6216782194359216875.xml:5:42-71
+7-->C:\Users\Teilnehmer\Downloads\Urlaubsapp\Urlaubsapp\android-app\app\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest5269446762151900315.xml:5:42-71
 8
 9    <instrumentation
-9-->C:\Users\Teilnehmer\Downloads\Urlaubsapp\Urlaubsapp\android-app\app\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest6216782194359216875.xml:7:5-11:72
+9-->C:\Users\Teilnehmer\Downloads\Urlaubsapp\Urlaubsapp\android-app\app\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest5269446762151900315.xml:7:5-11:72
 10        android:name="androidx.test.runner.AndroidJUnitRunner"
-10-->C:\Users\Teilnehmer\Downloads\Urlaubsapp\Urlaubsapp\android-app\app\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest6216782194359216875.xml:7:22-76
+10-->C:\Users\Teilnehmer\Downloads\Urlaubsapp\Urlaubsapp\android-app\app\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest5269446762151900315.xml:7:22-76
 11        android:functionalTest="false"
-11-->C:\Users\Teilnehmer\Downloads\Urlaubsapp\Urlaubsapp\android-app\app\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest6216782194359216875.xml:10:22-52
+11-->C:\Users\Teilnehmer\Downloads\Urlaubsapp\Urlaubsapp\android-app\app\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest5269446762151900315.xml:10:22-52
 12        android:handleProfiling="false"
-12-->C:\Users\Teilnehmer\Downloads\Urlaubsapp\Urlaubsapp\android-app\app\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest6216782194359216875.xml:9:22-53
+12-->C:\Users\Teilnehmer\Downloads\Urlaubsapp\Urlaubsapp\android-app\app\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest5269446762151900315.xml:9:22-53
 13        android:label="Tests for com.example.urlaubsapp"
-13-->C:\Users\Teilnehmer\Downloads\Urlaubsapp\Urlaubsapp\android-app\app\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest6216782194359216875.xml:11:22-70
+13-->C:\Users\Teilnehmer\Downloads\Urlaubsapp\Urlaubsapp\android-app\app\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest5269446762151900315.xml:11:22-70
 14        android:targetPackage="com.example.urlaubsapp" />
-14-->C:\Users\Teilnehmer\Downloads\Urlaubsapp\Urlaubsapp\android-app\app\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest6216782194359216875.xml:8:22-68
+14-->C:\Users\Teilnehmer\Downloads\Urlaubsapp\Urlaubsapp\android-app\app\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest5269446762151900315.xml:8:22-68
 15
 16    <application
 16-->INJECTED

@@ -5,6 +5,9 @@ import { renderList, addItem, toggleItem, removeItem,
 import { initDB, addDocument, getAllDocuments,
          getBlob, deleteDocument, renderDocuments }               from './modules/documents.js';
 import { loadTrip, updateTrip }                                   from './modules/trip.js';
+import { Accomodation }                                           from './modules/accomodation.js';
+import { initMap, showAccommodationOnMap, geocodeAddress }                        from './modules/maps.js';
+
 
 // ---- Elements
 const addForm               = document.getElementById("add-form");
@@ -23,11 +26,19 @@ const tripStartDateInput    = document.getElementById("tripStartDate");
 const tripEndDateInput      = document.getElementById("tripEndDate");
 const tripDepartureTimeInput = document.getElementById("tripDepartureTime");
 const tripSummary           = document.getElementById("trip-summary");
+const accommodationForm      = document.getElementById("accommodation-form");
+const accommodationNameInput = document.getElementById("accommodationName");
+const accommodationTypeInput = document.getElementById("accommodationType");
+const accommodationAddressInput = document.getElementById("accommodationAddress");
+const accommodationCheckInInput = document.getElementById("accommodationCheckIn");
+const accommodationCheckOutInput = document.getElementById("accommodationCheckOut");
+const accommodationSummary = document.getElementById("accommodation-summary");
 
 // ---- State
 let items       = [];
 let docs        = [];
 let currentTrip = loadTrip();
+let currentAccommodation = null;
 
 // ---- Countdown (einzige Quelle: trip.js)
 function syncCountdown(trip) {
@@ -107,6 +118,21 @@ function renderTrip() {
   }
 }
 
+function renderAccommodation() {
+  if (!currentTrip.accommodation) return;
+
+  const acc = currentTrip.accommodation;
+
+  accommodationNameInput.value = acc.name || '';
+  accommodationTypeInput.value = acc.type || 'hotel';
+  accommodationAddressInput.value = acc.address || '';
+  accommodationCheckInInput.value = acc.checkIn || '';
+  accommodationCheckOutInput.value = acc.checkOut || '';
+
+  accommodationSummary.textContent =
+    `${acc.name} · ${acc.address}`;
+}
+
 // ---- Events
 addForm.addEventListener("submit", (e) => {
   e.preventDefault();
@@ -182,6 +208,31 @@ tripForm.addEventListener("submit", (e) => {
   syncCountdown(currentTrip);
 });
 
+accommodationForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const address = accommodationAddressInput.value.trim();
+
+  const coordinates = await geocodeAddress(address);  
+
+  currentAccommodation = new Accommodation({
+  name: accommodationNameInput.value.trim(),
+  type: accommodationTypeInput.value,
+  address,
+  checkIn: accommodationCheckInInput.value,
+  checkOut: accommodationCheckOutInput.value,
+  lat: coordinates?.lat ?? null,
+  lng: coordinates?.lng ?? null
+  });
+
+  currentTrip = updateTrip({
+    accommodation: currentAccommodation
+  });
+
+  renderAccommodation();
+  showAccommodationOnMap(currentTrip.accommodation);
+});
+
 // ---- Tabs
 document.querySelectorAll('.tab-btn').forEach(btn => {
   btn.addEventListener('click', () => {
@@ -204,6 +255,9 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
 
   renderTrip();
   syncCountdown(currentTrip);
+  renderAccommodation();
+  initMap();
+  showAccommodationOnMap(currentTrip.accommodation);
   render();
   await renderDocs();
 })();

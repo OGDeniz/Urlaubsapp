@@ -5,7 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Urlaubs_Countdown & Packliste</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 </head>
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
 <body>
     <section class="hero" aria-labelledby="hero-title">
         <div class="hero__overlay"></div>
@@ -22,16 +25,58 @@
             <p class="sub">Alles im Blick - auch Offline.</p>
         </header>
 
-        <!-- Countdown Section -->
-         <section class="card">
-            <h2>Countdown</h2>
-            <form id="date-form" class="row">
-                <label for="tripDate">Abreisedatum:</label>
-                <input type="date" id="tripDate" name="tripDate" required>
-                <label for="tripTime">Abflugzeit:</label>
-                <input type="time" id="tripTime" name="tripTime" required>
-                <button type="submit">Countdown starten</button>
+        <nav class="tabs" role="tablist">
+            <button class="tab-btn active" data-target="tab-countdown" role="tab" aria-selected="true">⏳ Countdown</button>
+            <button class="tab-btn" data-target="tab-packliste" role="tab" aria-selected="false">📋 Packliste</button>
+            <button class="tab-btn" data-target="tab-dokumente" role="tab" aria-selected="false">📄 Dokumente</button>
+            <button class="tab-btn" data-target="tab-reise" role="tab" aria-selected="false">🧳 Reise</button>
+            <button class="tab-btn" data-target="tab-map">🗺 Karte</button>
+        </nav>
+
+        <!-- Reise Section -->
+         <section class="card tab-panel" id="tab-reise">
+            <h2>Reise-Daten</h2>
+
+            <form id="trip-form" class="row">
+                <input type="text" id="tripTitle" placeholder="z.B. Sommerurlaub 2026" required>
+                <input type="text" id="tripDestination" placeholder="z.B. Mallorca" required>
+                <input type="date" id="tripStartDate">
+                <input type="date" id="tripEndDate">
+                <input type="time" id="tripDepartureTime">
+                <button type="submit">Reise speichern</button>
             </form>
+
+            <p id="trip-summary" class="note"></p>
+        </section>
+
+        <hr>
+
+        <h3> Unterkunft </h3>
+
+        <form id="accommodation-form" class="row">
+            <input type="text" id="accommodationName" placeholder="z.B. Noreba Hospitality" required>
+
+            <select id="accommodationType">
+                <option value="hotel">🏨 Hotel</option>
+                <option value="apartment">🏠 Apartment</option>
+                <option value="hostel">🛏 Hostel</option>
+                <option value="airbnb">🔑 Airbnb</option>
+                <option value="other">📍 Sonstiges</option>
+            </select>
+
+            <input type="text" id="accommodationAddress" placeholder="Adresse / Stadt" required>
+            <input type="date" id="accommodationCheckIn">
+            <input type="date" id="accommodationCheckOut">
+
+            <button type="submit">Unterkunft speichern</button>
+        </form>
+
+<p id="accommodation-summary" class="note"></p>
+
+        <!-- Countdown Section -->
+         <section class="card tab-panel active" id="tab-countdown">
+            <h2>Countdown</h2>
+            <p class="note">Abreisedatum wird automatisch aus den <strong>Reise-Daten</strong> übernommen.</p>
             <div id="countdown" class="countdown">
                 <div class="cd-item"><span id="cd-days">0</span>Tage</div>
                 <div class="cd-item"><span id="cd-hours">0</span>Std</div>
@@ -42,7 +87,7 @@
          </section>
 
         <!-- Packing List Section -->
-        <section class="card">
+        <section class="card tab-panel" id="tab-packliste">
             <h2>Packliste</h2>
             <form id="add-form" class="row">
                 <label for="itemInput" class="sr-only">Neuer Gegenstand</label>
@@ -59,8 +104,14 @@
             <ul id="list" class="list" aria-live="polite"></ul>
         </section>
         
+        <!-- Karte Section -->
+        <section class="card tab-panel" id="tab-map">
+            <h2>Karte</h2>
+            <div id="map" style="height: 400px;"></div>
+        </section>
+
         <!-- Dokumente Section -->
-        <section class="card">
+        <section class="card tab-panel" id="tab-dokumente">
             <h2>Reise-Dokumente</h2>
             <form id="doc-form" class="row">
                 <input type="text" id="docName" placeholder="z.B. Flugticket Hinflug" required>
@@ -78,6 +129,8 @@
         <footer class="footer">
             <small>Speichert lokal im Browser (localStorage). Keine Datenübertragung</small>
         </footer>
+
+
     </main>
 
     <script type="module" src="app.js"></script>
