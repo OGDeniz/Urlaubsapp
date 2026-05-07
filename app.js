@@ -4,18 +4,18 @@ import { renderList, addItem, toggleItem, removeItem,
          reorderItems }                                            from './modules/list.js';
 import { initDB, addDocument, getAllDocuments,
          getBlob, deleteDocument, renderDocuments }               from './modules/documents.js';
-import {loadTrip, updateTrip} from './modules/trip.js';
+import { loadTrip, updateTrip }                                   from './modules/trip.js';
 
 // ---- Elements
-const addForm          = document.getElementById("add-form");
-const itemInput        = document.getElementById("itemInput");
-const btnCheckAll      = document.getElementById("btn-check-all");
-const btnUncheckAll    = document.getElementById("btn-uncheck-all");
-const btnClear         = document.getElementById("btn-clear");
-const docForm          = document.getElementById("doc-form");
-const docNameInput     = document.getElementById("docName");
-const docCategoryInput = document.getElementById("docCategory");
-const docFileInput     = document.getElementById("docFile");
+const addForm               = document.getElementById("add-form");
+const itemInput             = document.getElementById("itemInput");
+const btnCheckAll           = document.getElementById("btn-check-all");
+const btnUncheckAll         = document.getElementById("btn-uncheck-all");
+const btnClear              = document.getElementById("btn-clear");
+const docForm               = document.getElementById("doc-form");
+const docNameInput          = document.getElementById("docName");
+const docCategoryInput      = document.getElementById("docCategory");
+const docFileInput          = document.getElementById("docFile");
 const tripForm              = document.getElementById("trip-form");
 const tripTitleInput        = document.getElementById("tripTitle");
 const tripDestinationInput  = document.getElementById("tripDestination");
@@ -25,12 +25,11 @@ const tripDepartureTimeInput = document.getElementById("tripDepartureTime");
 const tripSummary           = document.getElementById("trip-summary");
 
 // ---- State
-let tripDate = null;
-let items    = [];
-let docs     = [];
+let items       = [];
+let docs        = [];
 let currentTrip = loadTrip();
 
-// ---- Countdown sync
+// ---- Countdown (einzige Quelle: trip.js)
 function syncCountdown(trip) {
   if (!trip.startDate) return;
   const [year, month, day] = trip.startDate.split('-').map(Number);
@@ -41,11 +40,7 @@ function syncCountdown(trip) {
     if (!isNaN(m)) minutes = m;
   }
   const date = new Date(year, month - 1, day, hours, minutes, 0, 0);
-  if (!isNaN(date.getTime())) {
-    tripDate = date;
-    save(tripDate, items);
-    startCountdown(tripDate);
-  }
+  if (!isNaN(date.getTime())) startCountdown(date);
 }
 
 // ---- Render
@@ -53,17 +48,17 @@ function render() {
   renderList(items, {
     onToggle: (id) => {
       items = toggleItem(items, id);
-      save(tripDate, items);
+      save(items);
       render();
     },
     onRemove: (id) => {
       items = removeItem(items, id);
-      save(tripDate, items);
+      save(items);
       render();
     },
     onReorder: (sourceId, targetId, placeAfter) => {
       items = reorderItems(items, sourceId, targetId, placeAfter);
-      save(tripDate, items);
+      save(items);
       render();
     },
   });
@@ -101,10 +96,10 @@ async function renderDocs() {
 }
 
 function renderTrip() {
-  tripTitleInput.value        = currentTrip.title        || '';
-  tripDestinationInput.value  = currentTrip.destination  || '';
-  tripStartDateInput.value    = currentTrip.startDate    || '';
-  tripEndDateInput.value      = currentTrip.endDate      || '';
+  tripTitleInput.value         = currentTrip.title         || '';
+  tripDestinationInput.value   = currentTrip.destination   || '';
+  tripStartDateInput.value     = currentTrip.startDate     || '';
+  tripEndDateInput.value       = currentTrip.endDate       || '';
   tripDepartureTimeInput.value = currentTrip.departureTime || '';
 
   if (currentTrip.title || currentTrip.destination) {
@@ -116,7 +111,7 @@ function renderTrip() {
 addForm.addEventListener("submit", (e) => {
   e.preventDefault();
   items = addItem(items, itemInput.value);
-  save(tripDate, items);
+  save(items);
   render();
   itemInput.value = "";
   itemInput.focus();
@@ -124,20 +119,20 @@ addForm.addEventListener("submit", (e) => {
 
 btnCheckAll.addEventListener("click", () => {
   items = items.map((it) => ({ ...it, done: true }));
-  save(tripDate, items);
+  save(items);
   render();
 });
 
 btnUncheckAll.addEventListener("click", () => {
   items = items.map((it) => ({ ...it, done: false }));
-  save(tripDate, items);
+  save(items);
   render();
 });
 
 btnClear.addEventListener("click", () => {
   if (confirm("Liste wirklich leeren?")) {
     items = [];
-    save(tripDate, items);
+    save(items);
     render();
   }
 });
