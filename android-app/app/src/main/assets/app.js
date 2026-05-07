@@ -258,7 +258,8 @@ async function loadPOIs(categoryKey, chipBtn) {
 
   const loading = document.getElementById('poi-loading');
   loading.hidden = false;
-  const places = await fetchPlaces(acc.lat, acc.lng, categoryKey);
+  const radius = parseInt(document.getElementById('poi-radius').value, 10);
+  const places = await fetchPlaces(acc.lat, acc.lng, categoryKey, radius);
   loading.hidden = true;
 
   const savedIds = (currentTrip.savedPlaces || []).map(p => p.id);
@@ -348,6 +349,11 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
       renderSavedPlaces();
     }
   });
+});
+
+document.getElementById('poi-radius').addEventListener('change', () => {
+  const activeChip = document.querySelector('.chip.active');
+  if (activeChip) activeChip.click();
 });
 
 // ---- Init

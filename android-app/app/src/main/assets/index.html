@@ -131,6 +131,17 @@
         <section class="card tab-panel" id="tab-map">
             <h2>Karte</h2>
             <div id="map" style="height: 400px;"></div>
+            <div class="radius-row">
+                <label for="poi-radius">Umkreis:</label>
+                <select id="poi-radius">
+                    <option value="500">500 m</option>
+                    <option value="1000">1 km</option>
+                    <option value="1500" selected>1,5 km</option>
+                    <option value="2000">2 km</option>
+                    <option value="5000">5 km</option>
+                    <option value="10000">10 km</option>
+                </select>
+            </div>
             <div id="poi-categories" class="chip-row"></div>
             <div id="poi-loading" class="poi-loading" hidden>Lädt…</div>
             <ul id="poi-results" class="poi-list"></ul>

@@ -424,7 +424,12 @@ input[type="file"]{
 }
 
 /* ---- POI / Entdecken ---- */
-.chip-row{ display:flex; gap:8px; flex-wrap:wrap; margin:16px 0 8px; }
+.radius-row{
+  display:flex; align-items:center; gap:10px;
+  margin:16px 0 4px; font-size:14px; font-weight:600; color:var(--muted);
+}
+.radius-row select{ width:auto; min-width:0; font-size:14px; padding:6px 10px; }
+.chip-row{ display:flex; gap:8px; flex-wrap:wrap; margin:8px 0 8px; }
 .chip{
   background:rgba(255,255,255,0.9);
   border:1px solid var(--border);

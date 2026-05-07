@@ -7,7 +7,7 @@ export const CATEGORIES = {
   supermarket: { label: '🛒 Supermarkt', key: 'shop',     val: 'supermarket' },
   bus_stop:    { label: '🚇 ÖPNV',       key: 'highway',  val: 'bus_stop'    },
   pharmacy:    { label: '💊 Apotheke',   key: 'amenity',  val: 'pharmacy'    },
-  bar:         { label: '🍺 Bars',       key: 'amenity',  val: 'bar'         },
+  bar:         { label: '🍺 Bars & Pubs', key: 'amenity',  val: 'bar|pub|biergarten|nightclub', regex: true },
 };
 
 function haversineMeters(lat1, lng1, lat2, lng2) {
@@ -21,17 +21,21 @@ function haversineMeters(lat1, lng1, lat2, lng2) {
   return Math.round(R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)));
 }
 
-export async function fetchPlaces(accLat, accLng, categoryKey) {
+export async function fetchPlaces(accLat, accLng, categoryKey, radius = 1500) {
   const cat = CATEGORIES[categoryKey];
   if (!cat) return [];
 
+  const selector = cat.regex
+    ? `["${cat.key}"~"^(${cat.val})$"]`
+    : `["${cat.key}"="${cat.val}"]`;
+
   const query = `
-    [out:json][timeout:10];
+    [out:json][timeout:15];
     (
-      node["${cat.key}"="${cat.val}"](around:1500,${accLat},${accLng});
-      way["${cat.key}"="${cat.val}"](around:1500,${accLat},${accLng});
+      node${selector}(around:${radius},${accLat},${accLng});
+      way${selector}(around:${radius},${accLat},${accLng});
     );
-    out center 20;
+    out center 30;
   `;
 
   try {
@@ -42,13 +46,13 @@ export async function fetchPlaces(accLat, accLng, categoryKey) {
     const data = await res.json();
 
     return data.elements
-      .filter(el => el.tags?.name)
+      .filter(el => (el.lat ?? el.center?.lat) != null)
       .map(el => {
         const lat = el.lat ?? el.center?.lat;
         const lng = el.lon ?? el.center?.lon;
         return {
           id:       `osm-${el.id}`,
-          name:     el.tags.name,
+          name:     el.tags.name || el.tags.brand || el.tags['name:de'] || 'Unbekannter Ort',
           category: categoryKey,
           lat,
           lng,
