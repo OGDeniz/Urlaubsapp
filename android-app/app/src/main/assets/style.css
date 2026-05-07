@@ -434,6 +434,26 @@ input[type="file"]{
 .poi-meta{ font-size:13px; color:var(--muted); }
 .poi-saved{ color:var(--accent-2) !important; }
 
+.poi-details{
+  width:100%; margin-top:12px; padding-top:12px;
+  border-top:1px solid var(--border); flex-basis:100%;
+}
+.poi-detail-img{
+  width:100%; max-height:220px; object-fit:cover;
+  border-radius:10px; margin-bottom:10px; display:block;
+}
+.poi-detail-desc{
+  font-size:13px; color:var(--muted); margin:0 0 10px; line-height:1.5;
+}
+.poi-detail-row{
+  font-size:13px; color:var(--text); padding:3px 0;
+}
+.poi-detail-row a{
+  color:var(--accent-2); text-decoration:none; font-weight:600;
+}
+.poi-detail-row a:hover{ text-decoration:underline; }
+.poi-detail-loading{ font-size:13px; color:var(--muted); padding:4px 0; }
+
 .footer{ text-align:center; color:rgba(74,101,114,0.8); margin-top:20px; font-size:14px; }
 
 .sr-only{

@@ -74,19 +74,42 @@ ${parts}
       .map(el => {
         const lat = el.lat ?? el.center?.lat;
         const lng = el.lon ?? el.center?.lon;
+        const t   = el.tags;
+        const street = [t['addr:street'], t['addr:housenumber']].filter(Boolean).join(' ');
         return {
-          id:       `osm-${el.id}`,
-          name:     el.tags.name || el.tags.brand || el.tags['name:de'] || 'Unbekannter Ort',
-          category: categoryKey,
-          lat,
-          lng,
-          distance: haversineMeters(accLat, accLng, lat, lng),
-          saved:    false,
+          id:            `osm-${el.id}`,
+          name:          t.name || t.brand || t['name:de'] || 'Unbekannter Ort',
+          category:      categoryKey,
+          lat, lng,
+          distance:      haversineMeters(accLat, accLng, lat, lng),
+          saved:         false,
+          website:       t.website       || t['contact:website'] || null,
+          phone:         t.phone         || t['contact:phone']   || null,
+          opening_hours: t.opening_hours || null,
+          address:       street          || null,
+          wikipedia:     t.wikipedia     || null,
         };
       })
       .sort((a, b) => a.distance - b.distance);
   } catch {
     return [];
+  }
+}
+
+async function fetchWikiSummary(wikipedia) {
+  const sep  = wikipedia.indexOf(':');
+  if (sep === -1) return null;
+  const lang  = wikipedia.slice(0, sep);
+  const title = encodeURIComponent(wikipedia.slice(sep + 1));
+  try {
+    const res  = await fetch(`https://${lang}.wikipedia.org/api/rest_v1/page/summary/${title}`);
+    const data = await res.json();
+    return {
+      image:       data.thumbnail?.source ?? null,
+      description: data.extract           ?? null,
+    };
+  } catch {
+    return null;
   }
 }
 
@@ -142,9 +165,88 @@ export function renderPlaces(places, { onShow, onSave }, savedIds = []) {
       });
     }
 
+    const hasExtra = place.website || place.phone || place.opening_hours || place.address || place.wikipedia;
+
     li.appendChild(info);
     li.appendChild(showBtn);
     li.appendChild(saveBtn);
+
+    if (hasExtra) {
+      const detailsDiv = document.createElement('div');
+      detailsDiv.className = 'poi-details';
+      detailsDiv.hidden = true;
+
+      let loaded = false;
+      const detailBtn = document.createElement('button');
+      detailBtn.className = 'ghost';
+      detailBtn.textContent = 'ℹ️ Details';
+      detailBtn.addEventListener('click', async () => {
+        detailsDiv.hidden = !detailsDiv.hidden;
+        if (!detailsDiv.hidden && !loaded) {
+          loaded = true;
+          detailsDiv.innerHTML = '<p class="poi-detail-loading">Lädt…</p>';
+
+          const fragment = document.createDocumentFragment();
+
+          if (place.wikipedia) {
+            const wiki = await fetchWikiSummary(place.wikipedia);
+            if (wiki?.image) {
+              const img = document.createElement('img');
+              img.src = wiki.image;
+              img.className = 'poi-detail-img';
+              img.alt = place.name;
+              fragment.appendChild(img);
+            }
+            if (wiki?.description) {
+              const p = document.createElement('p');
+              p.className = 'poi-detail-desc';
+              p.textContent = wiki.description;
+              fragment.appendChild(p);
+            }
+          }
+
+          const rows = [
+            place.address       && { icon: '📍', text: place.address },
+            place.opening_hours && { icon: '⏰', text: place.opening_hours },
+            place.phone         && { icon: '📞', text: place.phone },
+          ].filter(Boolean);
+
+          rows.forEach(({ icon, text }) => {
+            const row = document.createElement('div');
+            row.className = 'poi-detail-row';
+            row.textContent = `${icon} ${text}`;
+            fragment.appendChild(row);
+          });
+
+          if (place.website) {
+            const url = place.website.startsWith('http') ? place.website : `https://${place.website}`;
+            const row = document.createElement('div');
+            row.className = 'poi-detail-row';
+            const a = document.createElement('a');
+            a.href = url;
+            a.target = '_blank';
+            a.rel = 'noopener noreferrer';
+            a.textContent = '🌐 Website öffnen';
+            row.appendChild(a);
+            fragment.appendChild(row);
+          }
+
+          detailsDiv.innerHTML = '';
+          if (!fragment.children.length) {
+            const p = document.createElement('p');
+            p.className = 'poi-detail-loading';
+            p.textContent = 'Keine weiteren Informationen verfügbar.';
+            detailsDiv.appendChild(p);
+          } else {
+            detailsDiv.appendChild(fragment);
+          }
+        }
+      });
+
+      li.appendChild(detailBtn);
+      li.appendChild(detailsDiv);
+    }
+
     poiListEl.appendChild(li);
   });
 }
