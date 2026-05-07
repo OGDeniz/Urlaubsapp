@@ -1,28 +1,27 @@
 export const CATEGORIES = {
   attraction:  { label: '⭐ Must-See',    filters: [
-    { key: 'tourism',  val: 'attraction|viewpoint|artwork|zoo|theme_park|aquarium|gallery|miniature_golf', regex: true },
-    { key: 'historic', val: 'monument|memorial|castle|ruins|archaeological_site|building|fort|manor', regex: true },
+    { key: 'tourism',  val: 'attraction|viewpoint|artwork|zoo|theme_park|aquarium', regex: true },
+    { key: 'historic', val: 'monument|memorial|castle|ruins|archaeological_site|fort', regex: true },
   ]},
   museum:      { label: '🏛 Museen',      filters: [
     { key: 'tourism',  val: 'museum|gallery', regex: true },
   ]},
   restaurant:  { label: '🍽 Essen',       filters: [
     { key: 'amenity',  val: 'restaurant|cafe|fast_food|food_court|ice_cream', regex: true },
-    { key: 'shop',     val: 'bakery|pastry|deli', regex: true },
   ]},
   park:        { label: '🌳 Parks',       filters: [
-    { key: 'leisure',  val: 'park|garden|nature_reserve|recreation_ground|dog_park', regex: true },
+    { key: 'leisure',  val: 'park|garden|nature_reserve|recreation_ground', regex: true },
   ]},
   beach:       { label: '🏖 Strand',      filters: [
-    { key: 'natural',  val: 'beach|sand', regex: true },
+    { key: 'natural',  val: 'beach' },
     { key: 'leisure',  val: 'beach_resort|swimming_area', regex: true },
   ]},
   supermarket: { label: '🛒 Supermarkt',  filters: [
-    { key: 'shop',     val: 'supermarket|convenience|grocery|hypermarket|department_store|mall', regex: true },
+    { key: 'shop',     val: 'supermarket|convenience|grocery|hypermarket', regex: true },
   ]},
   bus_stop:    { label: '🚇 ÖPNV',        filters: [
     { key: 'highway',  val: 'bus_stop' },
-    { key: 'railway',  val: 'station|tram_stop|halt|subway_entrance', regex: true },
+    { key: 'railway',  val: 'station|tram_stop|halt', regex: true },
     { key: 'amenity',  val: 'ferry_terminal|bus_station', regex: true },
   ]},
   pharmacy:    { label: '💊 Gesundheit',  filters: [
@@ -55,11 +54,11 @@ export async function fetchPlaces(accLat, accLng, categoryKey, radius = 1500) {
   }).join('\n');
 
   const query = `
-    [out:json][timeout:15];
+    [out:json][timeout:20];
     (
 ${parts}
     );
-    out center 30;
+    out center 100;
   `;
 
   try {
@@ -67,7 +66,9 @@ ${parts}
       method: 'POST',
       body: query,
     });
+    if (!res.ok) return [];
     const data = await res.json();
+    if (!Array.isArray(data.elements)) return [];
 
     return data.elements
       .filter(el => (el.lat ?? el.center?.lat) != null)
@@ -90,7 +91,8 @@ ${parts}
           wikipedia:     t.wikipedia     || null,
         };
       })
-      .sort((a, b) => a.distance - b.distance);
+      .sort((a, b) => a.distance - b.distance)
+      .slice(0, 25);
   } catch {
     return [];
   }
