@@ -26,7 +26,23 @@
             <button class="tab-btn active" data-target="tab-countdown" role="tab" aria-selected="true">⏳ Countdown</button>
             <button class="tab-btn" data-target="tab-packliste" role="tab" aria-selected="false">📋 Packliste</button>
             <button class="tab-btn" data-target="tab-dokumente" role="tab" aria-selected="false">📄 Dokumente</button>
+            <button class="tab-btn" data-target="tab-reise" role="tab" aria-selected="false">🧳 Reise</button>
         </nav>
+
+        <!-- Reise Section -->
+         <section class="card tab-panel" id="tab-reise">
+            <h2>Reise-Daten</h2>
+
+            <form id="trip-form" class="row">
+                <input type="text" id="tripTitle" placeholder="z.B. Sommerurlaub 2026" required>
+                <input type="text" id="tripDestination" placeholder="z.B. Mallorca" required>
+                <input type="date" id="tripStartDate">
+                <input type="date" id="tripEndDate">
+                <button type="submit">Reise speichern</button>
+            </form>
+
+            <p id="trip-summary" class="note"></p>
+        </section>
 
         <!-- Countdown Section -->
          <section class="card tab-panel active" id="tab-countdown">
