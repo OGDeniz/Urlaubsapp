@@ -4,11 +4,9 @@ import { renderList, addItem, toggleItem, removeItem,
          reorderItems }                                            from './modules/list.js';
 import { initDB, addDocument, getAllDocuments,
          getBlob, deleteDocument, renderDocuments }               from './modules/documents.js';
+import {loadTrip, updateTrip} from './modules/trip.js';
 
 // ---- Elements
-const tripDateInput    = document.getElementById("tripDate");
-const tripTimeInput    = document.getElementById("tripTime");
-const dateForm         = document.getElementById("date-form");
 const addForm          = document.getElementById("add-form");
 const itemInput        = document.getElementById("itemInput");
 const btnCheckAll      = document.getElementById("btn-check-all");
@@ -18,11 +16,37 @@ const docForm          = document.getElementById("doc-form");
 const docNameInput     = document.getElementById("docName");
 const docCategoryInput = document.getElementById("docCategory");
 const docFileInput     = document.getElementById("docFile");
+const tripForm              = document.getElementById("trip-form");
+const tripTitleInput        = document.getElementById("tripTitle");
+const tripDestinationInput  = document.getElementById("tripDestination");
+const tripStartDateInput    = document.getElementById("tripStartDate");
+const tripEndDateInput      = document.getElementById("tripEndDate");
+const tripDepartureTimeInput = document.getElementById("tripDepartureTime");
+const tripSummary           = document.getElementById("trip-summary");
 
 // ---- State
 let tripDate = null;
 let items    = [];
 let docs     = [];
+let currentTrip = loadTrip();
+
+// ---- Countdown sync
+function syncCountdown(trip) {
+  if (!trip.startDate) return;
+  const [year, month, day] = trip.startDate.split('-').map(Number);
+  let hours = 0, minutes = 0;
+  if (trip.departureTime) {
+    const [h, m] = trip.departureTime.split(':').map(Number);
+    if (!isNaN(h)) hours = h;
+    if (!isNaN(m)) minutes = m;
+  }
+  const date = new Date(year, month - 1, day, hours, minutes, 0, 0);
+  if (!isNaN(date.getTime())) {
+    tripDate = date;
+    save(tripDate, items);
+    startCountdown(tripDate);
+  }
+}
 
 // ---- Render
 function render() {
@@ -76,34 +100,19 @@ async function renderDocs() {
   });
 }
 
-// ---- Events
-dateForm.addEventListener("submit", (e) => {
-  e.preventDefault();
-  const v = tripDateInput.value;
-  if (!v) return;
+function renderTrip() {
+  tripTitleInput.value        = currentTrip.title        || '';
+  tripDestinationInput.value  = currentTrip.destination  || '';
+  tripStartDateInput.value    = currentTrip.startDate    || '';
+  tripEndDateInput.value      = currentTrip.endDate      || '';
+  tripDepartureTimeInput.value = currentTrip.departureTime || '';
 
-  const timeValue = tripTimeInput ? tripTimeInput.value : "";
-  const [year, month, day] = v.split("-").map(Number);
-  if (!year || !month || !day) return;
-
-  let hours = 0;
-  let minutes = 0;
-  if (timeValue) {
-    const [h, m] = timeValue.split(":");
-    const parsedH = Number(h);
-    const parsedM = Number(m);
-    if (!Number.isNaN(parsedH)) hours = parsedH;
-    if (!Number.isNaN(parsedM)) minutes = parsedM;
+  if (currentTrip.title || currentTrip.destination) {
+    tripSummary.textContent = `${currentTrip.title} · ${currentTrip.destination}`;
   }
+}
 
-  const selected = new Date(year, month - 1, day, hours, minutes, 0, 0);
-  if (isNaN(selected.getTime())) return;
-
-  tripDate = selected;
-  save(tripDate, items);
-  startCountdown(tripDate);
-});
-
+// ---- Events
 addForm.addEventListener("submit", (e) => {
   e.preventDefault();
   items = addItem(items, itemInput.value);
@@ -165,26 +174,41 @@ docForm.addEventListener("submit", async (e) => {
   }
 });
 
+tripForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+  currentTrip = updateTrip({
+    title:         tripTitleInput.value.trim(),
+    destination:   tripDestinationInput.value.trim(),
+    startDate:     tripStartDateInput.value,
+    endDate:       tripEndDateInput.value,
+    departureTime: tripDepartureTimeInput.value,
+  });
+  renderTrip();
+  syncCountdown(currentTrip);
+});
+
+// ---- Tabs
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => {
+      b.classList.remove('active');
+      b.setAttribute('aria-selected', 'false');
+    });
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    btn.setAttribute('aria-selected', 'true');
+    document.getElementById(btn.dataset.target).classList.add('active');
+  });
+});
+
 // ---- Init
 (async function init() {
-  ({ tripDate, items } = load());
+  ({ items } = load());
+  currentTrip = loadTrip();
   await initDB();
 
-  if (tripDate instanceof Date && !isNaN(tripDate)) {
-    const yyyy = tripDate.getFullYear();
-    const mm   = String(tripDate.getMonth() + 1).padStart(2, "0");
-    const dd   = String(tripDate.getDate()).padStart(2, "0");
-    tripDateInput.value = `${yyyy}-${mm}-${dd}`;
-    if (tripTimeInput) {
-      const hh   = String(tripDate.getHours()).padStart(2, "0");
-      const mins = String(tripDate.getMinutes()).padStart(2, "0");
-      tripTimeInput.value = `${hh}:${mins}`;
-    }
-    startCountdown(tripDate);
-  } else if (tripTimeInput) {
-    tripTimeInput.value = "";
-  }
-
+  renderTrip();
+  syncCountdown(currentTrip);
   render();
   await renderDocs();
 })();

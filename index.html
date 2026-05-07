@@ -38,6 +38,7 @@
                 <input type="text" id="tripDestination" placeholder="z.B. Mallorca" required>
                 <input type="date" id="tripStartDate">
                 <input type="date" id="tripEndDate">
+                <input type="time" id="tripDepartureTime">
                 <button type="submit">Reise speichern</button>
             </form>
 
@@ -47,13 +48,7 @@
         <!-- Countdown Section -->
          <section class="card tab-panel active" id="tab-countdown">
             <h2>Countdown</h2>
-            <form id="date-form" class="row">
-                <label for="tripDate">Abreisedatum:</label>
-                <input type="date" id="tripDate" name="tripDate" required>
-                <label for="tripTime">Abflugzeit:</label>
-                <input type="time" id="tripTime" name="tripTime" required>
-                <button type="submit">Countdown starten</button>
-            </form>
+            <p class="note">Abreisedatum wird automatisch aus den <strong>Reise-Daten</strong> übernommen.</p>
             <div id="countdown" class="countdown">
                 <div class="cd-item"><span id="cd-days">0</span>Tage</div>
                 <div class="cd-item"><span id="cd-hours">0</span>Std</div>
