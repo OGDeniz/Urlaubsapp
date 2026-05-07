@@ -226,9 +226,16 @@ export function renderPlaces(places, { onShow, onSave }, savedIds = []) {
             row.className = 'poi-detail-row';
             const a = document.createElement('a');
             a.href = url;
-            a.target = '_blank';
             a.rel = 'noopener noreferrer';
             a.textContent = '🌐 Website öffnen';
+            a.addEventListener('click', (e) => {
+              e.preventDefault();
+              if (window.AndroidInterface?.openUrl) {
+                window.AndroidInterface.openUrl(url);
+              } else {
+                window.open(url, '_blank', 'noopener,noreferrer');
+              }
+            });
             row.appendChild(a);
             fragment.appendChild(row);
           }

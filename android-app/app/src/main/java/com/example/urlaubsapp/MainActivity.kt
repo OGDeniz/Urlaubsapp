@@ -29,6 +29,15 @@ class MainActivity : AppCompatActivity() {
 
     inner class AndroidInterface {
         @JavascriptInterface
+        fun openUrl(url: String) {
+            runOnUiThread {
+                try {
+                    startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
+                } catch (e: ActivityNotFoundException) { }
+            }
+        }
+
+        @JavascriptInterface
         fun openFile(base64: String, mimeType: String, fileName: String) {
             val bytes = Base64.decode(base64, Base64.DEFAULT)
             val file = File(cacheDir, fileName)
