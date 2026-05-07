@@ -5,7 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Urlaubs_Countdown & Packliste</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 </head>
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
 <body>
     <section class="hero" aria-labelledby="hero-title">
         <div class="hero__overlay"></div>
@@ -27,6 +30,7 @@
             <button class="tab-btn" data-target="tab-packliste" role="tab" aria-selected="false">📋 Packliste</button>
             <button class="tab-btn" data-target="tab-dokumente" role="tab" aria-selected="false">📄 Dokumente</button>
             <button class="tab-btn" data-target="tab-reise" role="tab" aria-selected="false">🧳 Reise</button>
+            <button class="tab-btn" data-target="tab-map">🗺 Karte</button>
         </nav>
 
         <!-- Reise Section -->
@@ -43,6 +47,30 @@
             </form>
 
             <p id="trip-summary" class="note"></p>
+
+            <hr>
+
+            <h3>Unterkunft</h3>
+
+            <form id="accommodation-form" class="row">
+                <input type="text" id="accommodationName" placeholder="z.B. Noreba Hospitality" required>
+
+                <select id="accommodationType">
+                    <option value="hotel">🏨 Hotel</option>
+                    <option value="apartment">🏠 Apartment</option>
+                    <option value="hostel">🛏 Hostel</option>
+                    <option value="airbnb">🔑 Airbnb</option>
+                    <option value="other">📍 Sonstiges</option>
+                </select>
+
+                <input type="text" id="accommodationAddress" placeholder="Adresse / Stadt" required>
+                <input type="date" id="accommodationCheckIn">
+                <input type="date" id="accommodationCheckOut">
+
+                <button type="submit">Unterkunft speichern</button>
+            </form>
+
+            <p id="accommodation-summary" class="note"></p>
         </section>
 
         <!-- Countdown Section -->
@@ -75,7 +103,13 @@
 
             <ul id="list" class="list" aria-live="polite"></ul>
         </section>
-        
+
+        <!-- Karte Section -->
+        <section class="card tab-panel" id="tab-map">
+            <h2>Karte</h2>
+            <div id="map" style="height: 400px;"></div>
+        </section>
+
         <!-- Dokumente Section -->
         <section class="card tab-panel" id="tab-dokumente">
             <h2>Reise-Dokumente</h2>
