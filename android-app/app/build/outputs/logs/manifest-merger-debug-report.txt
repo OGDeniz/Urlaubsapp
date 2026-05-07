@@ -1,13 +1,25 @@
 -- Merging decision tree log ---
+provider#androidx.core.content.FileProvider
+INJECTED from C:\Users\Teilnehmer\Downloads\Urlaubsapp\Urlaubsapp\android-app\app\src\main\AndroidManifest.xml:23:9-31:20
+	android:grantUriPermissions
+		ADDED from C:\Users\Teilnehmer\Downloads\Urlaubsapp\Urlaubsapp\android-app\app\src\main\AndroidManifest.xml:27:13-47
+	android:authorities
+		INJECTED from C:\Users\Teilnehmer\Downloads\Urlaubsapp\Urlaubsapp\android-app\app\src\main\AndroidManifest.xml
+		ADDED from C:\Users\Teilnehmer\Downloads\Urlaubsapp\Urlaubsapp\android-app\app\src\main\AndroidManifest.xml:25:13-60
+	android:exported
+		ADDED from C:\Users\Teilnehmer\Downloads\Urlaubsapp\Urlaubsapp\android-app\app\src\main\AndroidManifest.xml:26:13-37
+	android:name
+		ADDED from C:\Users\Teilnehmer\Downloads\Urlaubsapp\Urlaubsapp\android-app\app\src\main\AndroidManifest.xml:24:13-62
 manifest
-ADDED from C:\Users\Teilnehmer\Downloads\Urlaubsapp\Urlaubsapp\android-app\app\src\main\AndroidManifest.xml:2:1-24:12
-INJECTED from C:\Users\Teilnehmer\Downloads\Urlaubsapp\Urlaubsapp\android-app\app\src\main\AndroidManifest.xml:2:1-24:12
-INJECTED from C:\Users\Teilnehmer\Downloads\Urlaubsapp\Urlaubsapp\android-app\app\src\main\AndroidManifest.xml:2:1-24:12
-INJECTED from C:\Users\Teilnehmer\Downloads\Urlaubsapp\Urlaubsapp\android-app\app\src\main\AndroidManifest.xml:2:1-24:12
+ADDED from C:\Users\Teilnehmer\Downloads\Urlaubsapp\Urlaubsapp\android-app\app\src\main\AndroidManifest.xml:2:1-34:12
+INJECTED from C:\Users\Teilnehmer\Downloads\Urlaubsapp\Urlaubsapp\android-app\app\src\main\AndroidManifest.xml:2:1-34:12
+INJECTED from C:\Users\Teilnehmer\Downloads\Urlaubsapp\Urlaubsapp\android-app\app\src\main\AndroidManifest.xml:2:1-34:12
+INJECTED from C:\Users\Teilnehmer\Downloads\Urlaubsapp\Urlaubsapp\android-app\app\src\main\AndroidManifest.xml:2:1-34:12
 MERGED from [com.google.android.material:material:1.11.0] C:\Users\Teilnehmer\.gradle\caches\9.4.1\transforms\6fcd257212f58928ef189eab02bf90e0\transformed\material-1.11.0\AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.constraintlayout:constraintlayout:2.1.4] C:\Users\Teilnehmer\.gradle\caches\9.4.1\transforms\27ce8cc530c15caee9f3933e10a1552e\transformed\constraintlayout-2.1.4\AndroidManifest.xml:2:1-11:12
 MERGED from [androidx.appcompat:appcompat-resources:1.6.1] C:\Users\Teilnehmer\.gradle\caches\9.4.1\transforms\a60d6bb10b5a7af8e51063944d87c267\transformed\appcompat-resources-1.6.1\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.appcompat:appcompat:1.6.1] C:\Users\Teilnehmer\.gradle\caches\9.4.1\transforms\1238fddfb479cce40fb58ef2e9504f18\transformed\appcompat-1.6.1\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.webkit:webkit:1.8.0] C:\Users\Teilnehmer\.gradle\caches\9.4.1\transforms\b345be0254dd3bf37e6fc84ec253a383\transformed\webkit-1.8.0\AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.emoji2:emoji2-views-helper:1.2.0] C:\Users\Teilnehmer\.gradle\caches\9.4.1\transforms\60a91356f263ac7bbb6ee2a4b2c7e1ad\transformed\emoji2-views-helper-1.2.0\AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.emoji2:emoji2:1.2.0] C:\Users\Teilnehmer\.gradle\caches\9.4.1\transforms\bb45d04b6980b81c82f57f598a75d1dc\transformed\emoji2-1.2.0\AndroidManifest.xml:17:1-35:12
 MERGED from [androidx.viewpager2:viewpager2:1.0.0] C:\Users\Teilnehmer\.gradle\caches\9.4.1\transforms\97beb3686f9c5a12b5ff28e3f8ad51f8\transformed\viewpager2-1.0.0\AndroidManifest.xml:17:1-24:12
@@ -58,8 +70,8 @@ ADDED from C:\Users\Teilnehmer\Downloads\Urlaubsapp\Urlaubsapp\android-app\app\s
 	android:name
 		ADDED from C:\Users\Teilnehmer\Downloads\Urlaubsapp\Urlaubsapp\android-app\app\src\main\AndroidManifest.xml:4:22-64
 application
-ADDED from C:\Users\Teilnehmer\Downloads\Urlaubsapp\Urlaubsapp\android-app\app\src\main\AndroidManifest.xml:6:5-22:19
-INJECTED from C:\Users\Teilnehmer\Downloads\Urlaubsapp\Urlaubsapp\android-app\app\src\main\AndroidManifest.xml:6:5-22:19
+ADDED from C:\Users\Teilnehmer\Downloads\Urlaubsapp\Urlaubsapp\android-app\app\src\main\AndroidManifest.xml:6:5-32:19
+INJECTED from C:\Users\Teilnehmer\Downloads\Urlaubsapp\Urlaubsapp\android-app\app\src\main\AndroidManifest.xml:6:5-32:19
 MERGED from [com.google.android.material:material:1.11.0] C:\Users\Teilnehmer\.gradle\caches\9.4.1\transforms\6fcd257212f58928ef189eab02bf90e0\transformed\material-1.11.0\AndroidManifest.xml:22:5-20
 MERGED from [com.google.android.material:material:1.11.0] C:\Users\Teilnehmer\.gradle\caches\9.4.1\transforms\6fcd257212f58928ef189eab02bf90e0\transformed\material-1.11.0\AndroidManifest.xml:22:5-20
 MERGED from [androidx.constraintlayout:constraintlayout:2.1.4] C:\Users\Teilnehmer\.gradle\caches\9.4.1\transforms\27ce8cc530c15caee9f3933e10a1552e\transformed\constraintlayout-2.1.4\AndroidManifest.xml:9:5-20
@@ -108,6 +120,12 @@ category#android.intent.category.LAUNCHER
 ADDED from C:\Users\Teilnehmer\Downloads\Urlaubsapp\Urlaubsapp\android-app\app\src\main\AndroidManifest.xml:19:17-77
 	android:name
 		ADDED from C:\Users\Teilnehmer\Downloads\Urlaubsapp\Urlaubsapp\android-app\app\src\main\AndroidManifest.xml:19:27-74
+meta-data#android.support.FILE_PROVIDER_PATHS
+ADDED from C:\Users\Teilnehmer\Downloads\Urlaubsapp\Urlaubsapp\android-app\app\src\main\AndroidManifest.xml:28:13-30:54
+	android:resource
+		ADDED from C:\Users\Teilnehmer\Downloads\Urlaubsapp\Urlaubsapp\android-app\app\src\main\AndroidManifest.xml:30:17-51
+	android:name
+		ADDED from C:\Users\Teilnehmer\Downloads\Urlaubsapp\Urlaubsapp\android-app\app\src\main\AndroidManifest.xml:29:17-67
 uses-sdk
 INJECTED from C:\Users\Teilnehmer\Downloads\Urlaubsapp\Urlaubsapp\android-app\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from C:\Users\Teilnehmer\Downloads\Urlaubsapp\Urlaubsapp\android-app\app\src\main\AndroidManifest.xml
@@ -120,6 +138,8 @@ MERGED from [androidx.appcompat:appcompat-resources:1.6.1] C:\Users\Teilnehmer\.
 MERGED from [androidx.appcompat:appcompat-resources:1.6.1] C:\Users\Teilnehmer\.gradle\caches\9.4.1\transforms\a60d6bb10b5a7af8e51063944d87c267\transformed\appcompat-resources-1.6.1\AndroidManifest.xml:20:5-44
 MERGED from [androidx.appcompat:appcompat:1.6.1] C:\Users\Teilnehmer\.gradle\caches\9.4.1\transforms\1238fddfb479cce40fb58ef2e9504f18\transformed\appcompat-1.6.1\AndroidManifest.xml:20:5-44
 MERGED from [androidx.appcompat:appcompat:1.6.1] C:\Users\Teilnehmer\.gradle\caches\9.4.1\transforms\1238fddfb479cce40fb58ef2e9504f18\transformed\appcompat-1.6.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.webkit:webkit:1.8.0] C:\Users\Teilnehmer\.gradle\caches\9.4.1\transforms\b345be0254dd3bf37e6fc84ec253a383\transformed\webkit-1.8.0\AndroidManifest.xml:5:5-44
+MERGED from [androidx.webkit:webkit:1.8.0] C:\Users\Teilnehmer\.gradle\caches\9.4.1\transforms\b345be0254dd3bf37e6fc84ec253a383\transformed\webkit-1.8.0\AndroidManifest.xml:5:5-44
 MERGED from [androidx.emoji2:emoji2-views-helper:1.2.0] C:\Users\Teilnehmer\.gradle\caches\9.4.1\transforms\60a91356f263ac7bbb6ee2a4b2c7e1ad\transformed\emoji2-views-helper-1.2.0\AndroidManifest.xml:5:5-44
 MERGED from [androidx.emoji2:emoji2-views-helper:1.2.0] C:\Users\Teilnehmer\.gradle\caches\9.4.1\transforms\60a91356f263ac7bbb6ee2a4b2c7e1ad\transformed\emoji2-views-helper-1.2.0\AndroidManifest.xml:5:5-44
 MERGED from [androidx.emoji2:emoji2:1.2.0] C:\Users\Teilnehmer\.gradle\caches\9.4.1\transforms\bb45d04b6980b81c82f57f598a75d1dc\transformed\emoji2-1.2.0\AndroidManifest.xml:21:5-44

@@ -4388,6 +4388,7 @@ com.example.urlaubsapp:color/dim_foreground_disabled_material_dark = 0x7f050055
 com.example.urlaubsapp:style/Widget.Material3.MaterialCalendar.Day.Selected = 0x7f0f0394
 com.example.urlaubsapp:dimen/design_snackbar_action_inline_max_width = 0x7f06007e
 com.example.urlaubsapp:color/m3_ref_palette_secondary90 = 0x7f05013d
+com.example.urlaubsapp:xml/file_paths = 0x7f110000
 com.example.urlaubsapp:id/search_plate = 0x7f08017f
 com.example.urlaubsapp:attr/waveShape = 0x7f0304ca
 com.example.urlaubsapp:string/mtrl_picker_invalid_format = 0x7f0e0077

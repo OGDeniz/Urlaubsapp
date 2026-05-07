@@ -10,3 +10,4 @@ color md_theme_surface
 id webView
 layout activity_main
 style Theme.Urlaubsapp
+xml file_paths

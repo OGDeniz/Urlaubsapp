@@ -5,6 +5,8 @@ const STORE      = 'documents';
 const CATEGORY_LABELS = {
   flugticket: '✈ Flugticket',
   unterkunft: '🏨 Unterkunft',
+  mietwagen: '🚗 Mietwagen',
+  ausweis:    '🆔 Ausweis',
   sonstiges:  '📄 Sonstiges',
 };
 
