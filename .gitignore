@@ -3,6 +3,9 @@
 *.aab
 output-metadata.json
 
+# IDE
+.idea/
+
 # Tools
 .agents/
 .claude/
