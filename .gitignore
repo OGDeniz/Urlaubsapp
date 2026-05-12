@@ -9,3 +9,4 @@ output-metadata.json
 # Tools
 .agents/
 .claude/
+CLAUDE.md
