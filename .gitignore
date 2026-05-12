@@ -10,4 +10,4 @@ output-metadata.json
 .agents/
 .claude/
 CLAUDE.md
-lessons.md
+tasks/lessons.md
