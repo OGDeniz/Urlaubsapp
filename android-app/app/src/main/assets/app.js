@@ -6,6 +6,7 @@ import { initDB, addDocument, getAllDocuments,
          getBlob, deleteDocument, renderDocuments }               from './modules/documents.js';
 import { loadTrip, updateTrip }                                   from './modules/trip.js';
 import { Accommodation }                                          from './modules/accommodation.js';
+import { Flight }                                                 from './modules/flight.js';
 import { initMap, showAccommodationOnMap, geocodeAddress, showPlaceOnMap } from './modules/maps.js';
 import { fetchPlaces, renderPlaces, createPlaceInfo, CATEGORIES }          from './modules/places.js';
 
@@ -34,6 +35,14 @@ const accommodationAddressInput = document.getElementById("accommodationAddress"
 const accommodationCheckInInput = document.getElementById("accommodationCheckIn");
 const accommodationCheckOutInput = document.getElementById("accommodationCheckOut");
 const accommodationSummary = document.getElementById("accommodation-summary");
+const flightForm               = document.getElementById("flight-form");
+const flightTypeInput          = document.getElementById("flightType");
+const flightNumberInput        = document.getElementById("flightNumber");
+const flightFromInput          = document.getElementById("flightFrom");
+const flightToInput            = document.getElementById("flightTo");
+const flightDepartureDateInput = document.getElementById("flightDepartureDate");
+const flightDepartureTimeInput = document.getElementById("flightDepartureTime");
+const flightArrivalTimeInput   = document.getElementById("flightArrivalTime");
 
 // ---- State
 let items       = [];
@@ -131,6 +140,63 @@ function renderAccommodation() {
 
   accommodationSummary.textContent =
     `${acc.name} · ${acc.address}`;
+}
+
+const FLIGHT_TYPE_LABELS = {
+  outbound: '✈ Hinflug',
+  return:   '↩ Rückflug',
+  transit:  '🔄 Zwischenstopp',
+};
+
+function renderFlights() {
+  const listEl = document.getElementById('flight-list');
+  const flights = currentTrip.flights || [];
+  listEl.innerHTML = '';
+
+  if (!flights.length) {
+    const li = document.createElement('li');
+    li.className = 'poi-card';
+    li.textContent = 'Noch keine Flüge eingetragen.';
+    listEl.appendChild(li);
+    return;
+  }
+
+  flights.forEach(flight => {
+    const li = document.createElement('li');
+    li.className = 'poi-card';
+
+    const info = document.createElement('div');
+    info.className = 'poi-info';
+
+    const name = document.createElement('div');
+    name.className = 'poi-name';
+    name.textContent = `${flight.flightNumber}  ${flight.from} → ${flight.to}`;
+
+    const meta = document.createElement('div');
+    meta.className = 'poi-meta';
+    const parts = [FLIGHT_TYPE_LABELS[flight.type] ?? flight.type];
+    if (flight.departureDate) parts.push(new Date(flight.departureDate + 'T00:00').toLocaleDateString('de-DE'));
+    if (flight.departureTime) parts.push(`Ab ${flight.departureTime}`);
+    if (flight.arrivalTime)   parts.push(`An ${flight.arrivalTime}`);
+    meta.textContent = parts.join(' · ');
+
+    info.appendChild(name);
+    info.appendChild(meta);
+
+    const removeBtn = document.createElement('button');
+    removeBtn.className = 'danger';
+    removeBtn.textContent = '🗑 Entfernen';
+    removeBtn.addEventListener('click', () => {
+      currentTrip = updateTrip({
+        flights: currentTrip.flights.filter(f => f.id !== flight.id),
+      });
+      renderFlights();
+    });
+
+    li.appendChild(info);
+    li.appendChild(removeBtn);
+    listEl.appendChild(li);
+  });
 }
 
 // ---- Events
@@ -231,6 +297,24 @@ accommodationForm.addEventListener("submit", async (e) => {
   currentTrip = updateTrip({ accommodation: currentAccommodation });
   renderAccommodation();
   showAccommodationOnMap(currentTrip.accommodation);
+});
+
+flightForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const flight = new Flight({
+    type:          flightTypeInput.value,
+    flightNumber:  flightNumberInput.value.trim().toUpperCase(),
+    from:          flightFromInput.value.trim().toUpperCase(),
+    to:            flightToInput.value.trim().toUpperCase(),
+    departureDate: flightDepartureDateInput.value,
+    departureTime: flightDepartureTimeInput.value,
+    arrivalTime:   flightArrivalTimeInput.value,
+  });
+  currentTrip = updateTrip({
+    flights: [...(currentTrip.flights || []), flight],
+  });
+  flightForm.reset();
+  renderFlights();
 });
 
 // ---- POI
@@ -358,6 +442,7 @@ document.getElementById('poi-radius').addEventListener('change', () => {
   renderTrip();
   syncCountdown(currentTrip);
   renderAccommodation();
+  renderFlights();
   initMap();
   showAccommodationOnMap(currentTrip.accommodation);
   render();

@@ -8,4 +8,4 @@
 
 ## Nächste Features
 
-- [ ] **Flüge** — `flights: []` im Trip-Modell bereits vorhanden; UI implementieren (Flugnummer, Abflug, Ankunft, Airline)
+- [x] **Flüge** — `flight.js` erstellt, Formular + Card-Liste im Reise-Tab, Persistenz via `ua_current_trip`

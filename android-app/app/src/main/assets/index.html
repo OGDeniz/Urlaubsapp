@@ -94,6 +94,27 @@
             </form>
 
             <p id="accommodation-summary" class="note"></p>
+
+            <hr>
+
+            <h3>Flüge</h3>
+
+            <form id="flight-form" class="row">
+                <select id="flightType">
+                    <option value="outbound">✈ Hinflug</option>
+                    <option value="return">↩ Rückflug</option>
+                    <option value="transit">🔄 Zwischenstopp</option>
+                </select>
+                <input type="text" id="flightNumber" placeholder="Flugnummer z.B. FR1234" required>
+                <input type="text" id="flightFrom" placeholder="Von (z.B. FRA)" required>
+                <input type="text" id="flightTo" placeholder="Nach (z.B. BCN)" required>
+                <input type="date" id="flightDepartureDate">
+                <input type="time" id="flightDepartureTime">
+                <input type="time" id="flightArrivalTime">
+                <button type="submit">Flug hinzufügen</button>
+            </form>
+
+            <ul id="flight-list" class="poi-list"></ul>
         </section>
 
         <!-- Countdown Section -->
