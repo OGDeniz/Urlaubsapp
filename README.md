@@ -1,238 +1,152 @@
-# 🏖️ Urlaubsapp - Countdown & Packliste
+# 🏖️ Urlaubsapp
 
-Eine elegante Web- und Android-Anwendung zur Vorbereitung Ihres nächsten Urlaubs. Mit Live-Countdown bis zur Abreise und einer interaktiven Packliste, die komplett offline funktioniert.
-
-![Hero Image](https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1600&q=80)
+Eine Web-App zur Urlaubsvorbereitung, verpackt als native Android-App via WebView. Läuft vollständig offline – alle Daten bleiben lokal auf dem Gerät.
 
 ## ✨ Features
 
-### 🕒 Countdown-Timer
+### ⏳ Countdown
+- Präziser Countdown bis zur Abreise (Tage, Stunden, Minuten, Sekunden)
+- Abreisedatum und -uhrzeit werden aus den Reise-Daten übernommen
 
-- **Präziser Countdown** bis zu Ihrem Abreisedatum und -zeitpunkt
-- Anzeige in Tagen, Stunden, Minuten und Sekunden
-- Speicherung des Datums im Browser (localStorage)
-- Automatische Glückwunsch-Nachricht bei Abreise
+### 📋 Packliste
+- Gegenstände hinzufügen, abhaken, löschen
+- Drag & Drop zum Umsortieren
+- Batch-Aktionen: Alle abhaken, alle zurücksetzen, Liste leeren
 
-### 📋 Interaktive Packliste
+### 🧳 Reise & Unterkunft
+- Reisedaten speichern: Titel, Ziel, Abreise/Rückkehr, Abflugzeit
+- Unterkunft verwalten: Name, Typ, Adresse, Check-in/Check-out
+- Adresse wird automatisch geokodiert (Nominatim/OpenStreetMap)
 
-- **Gegenstände hinzufügen** und verwalten
-- **Abhaken** erledigter Aufgaben
-- **Drag & Drop** zum Umsortieren der Listeneinträge
-- Batch-Aktionen:
-  - Alle abhaken
-  - Alle zurücksetzen
-  - Liste leeren
-- **Offline-fähig** - alle Daten werden lokal gespeichert
+### 🗺️ Karte & POI-Suche
+- Interaktive Karte (Leaflet + OpenStreetMap)
+- Unterkunft wird automatisch auf der Karte markiert
+- POI-Suche in 9 Kategorien via Overpass API (OSM):
+  Must-See, Museen, Essen, Parks, Strand, Supermarkt, ÖPNV, Gesundheit, Bars & Pubs
+- Einstellbarer Suchradius (500 m – 10 km)
+- POI-Details: Öffnungszeiten, Adresse, Telefon, Website, Wikipedia-Bild
 
-### 🎨 Modernes Design
+### ❤️ Gespeicherte Orte
+- POIs aus der Suche speichern und auf der Karte anzeigen
 
-- Responsive Layout für alle Bildschirmgrößen
-- Glasmorphismus-Effekte
-- Sanfte Animationen und Übergänge
-- Barrierefreie Navigation (ARIA-Labels)
-- Schönes Hero-Banner mit Urlaubsmotiv
-
-## 🚀 Schnellstart
-
-### Web-Version
-
-1. **Dateien öffnen:**
-
-   ```bash
-   # Einfach die index.html im Browser öffnen
-   start index.html
-   ```
-
-   Oder mit einem lokalen Webserver:
-
-   ```bash
-   # Python 3
-   python -m http.server 8000
-
-   # Dann öffnen: http://localhost:8000
-   ```
-
-2. **Datum einstellen:**
-
-   - Abreisedatum und Abflugzeit eingeben
-   - "Countdown starten" klicken
-
-3. **Packliste erstellen:**
-   - Gegenstände in das Eingabefeld eintragen
-   - Mit "Hinzufügen" zur Liste hinzufügen
-   - Checkboxen zum Abhaken nutzen
-   - Mit Drag-Handle (☰) umsortieren
-
-### Android-Version
-
-1. **Voraussetzungen:**
-
-   - Android Studio Arctic Fox oder höher
-   - JDK 17
-   - Android SDK 24 oder höher
-
-2. **Projekt öffnen:**
-
-   ```bash
-   cd android-app
-   ```
-
-   Öffnen Sie das Projekt in Android Studio
-
-3. **Build & Run:**
-   - In Android Studio: "Run" → "Run 'app'"
-   - Oder via Kommandozeile:
-     ```bash
-     ./gradlew assembleDebug
-     ```
+### 📄 Dokumente
+- Reisedokumente (PDF, Bilder) lokal im Browser speichern (IndexedDB)
+- Auf Android: Dokumente mit nativen Apps öffnen
 
 ## 📁 Projektstruktur
 
 ```
 Urlaubsapp/
-├── index.html              # Haupt-HTML-Datei
-├── app.js                  # JavaScript-Logik
-├── style.css               # Styling und Animationen
-├── README.md               # Diese Datei
-├── output-metadata.json    # Build-Metadaten
-│
-└── android-app/            # Android-App-Verzeichnis
-    ├── build.gradle        # Projekt-Build-Konfiguration
-    ├── settings.gradle     # Gradle-Einstellungen
-    ├── gradle.properties   # Gradle-Properties
-    ├── gradlew             # Gradle Wrapper (Unix)
-    ├── gradlew.bat         # Gradle Wrapper (Windows)
-    ├── local.properties    # Lokale SDK-Pfade
-    │
-    ├── app/
-    │   ├── build.gradle    # App-spezifische Build-Konfiguration
-    │   ├── proguard-rules.pro
-    │   └── src/
-    │       └── main/
-    │           ├── AndroidManifest.xml
-    │           ├── assets/
-    │           ├── java/
-    │           └── res/
-    │
-    └── gradle/
-        └── wrapper/
-            └── gradle-wrapper.properties
+├── README.md
+├── .gitignore
+└── android-app/
+    ├── build.gradle
+    ├── settings.gradle
+    ├── gradlew / gradlew.bat
+    └── app/
+        ├── build.gradle
+        └── src/main/
+            ├── AndroidManifest.xml
+            ├── java/com/example/urlaubsapp/
+            │   └── MainActivity.kt        # WebView-Setup, JS-Bridge
+            ├── res/                       # App-Icons, Themes
+            └── assets/                    # Web-App (einzige Quelle)
+                ├── index.html
+                ├── app.js                 # Einstiegspunkt, Event-Handler
+                ├── style.css
+                └── modules/
+                    ├── accommodation.js   # Accommodation-Klasse
+                    ├── countdown.js       # Countdown-Timer
+                    ├── documents.js       # IndexedDB-Wrapper
+                    ├── list.js            # Packliste + Drag & Drop
+                    ├── maps.js            # Leaflet, Geocoding
+                    ├── places.js          # Overpass-API, POI-Rendering
+                    ├── storage.js         # localStorage-Abstraktion
+                    └── trip.js            # Reisedaten-Persistenz
 ```
 
-## 🛠️ Technologie-Stack
+## 🛠️ Tech-Stack
 
 ### Web-App
+- **Vanilla JavaScript** (ES Modules, kein Framework)
+- **HTML5 / CSS3** (Custom Properties, Flexbox, Grid)
+- **Leaflet.js** – interaktive Karte
+- **Overpass API** – POI-Daten aus OpenStreetMap
+- **Nominatim** – Adress-Geokodierung
+- **localStorage** – Reisedaten & Packliste
+- **IndexedDB** – Dokument-Binärdaten
 
-- **HTML5** - Semantisches Markup
-- **CSS3** - Moderne Styling-Features (Grid, Flexbox, Custom Properties)
-- **Vanilla JavaScript** - Keine Frameworks, pure Performance
-- **LocalStorage API** - Offline-Datenpersistenz
-- **Drag & Drop API** - Native Browser-Funktionalität
-
-### Android-App
-
-- **Kotlin** - Moderne Android-Entwicklung
-- **Android SDK 34** (Target)
-- **Minimum SDK 24** (Android 7.0+)
-- **Material Design Components**
-- **AndroidX Libraries**
+### Android
+- **Kotlin**
+- **WebView** mit `WebViewAssetLoader` (lädt Assets über `https://appassets.androidplatform.net`)
+- **JavaScript-Bridge** (`window.AndroidInterface`):
+  - `openUrl(url)` – öffnet Links im System-Browser
+  - `openFile(base64, mimeType, fileName)` – öffnet Dokumente mit nativen Apps
+- **Min SDK:** 24 (Android 7.0)
+- **Target SDK:** 34 (Android 14)
 
 ## 💾 Datenspeicherung
 
-Alle Daten werden **lokal** im Browser gespeichert:
+| Schlüssel / Storage | Inhalt |
+|---|---|
+| `ua_current_trip` (localStorage) | Reisedaten, Unterkunft, gespeicherte Orte |
+| `ua_pack_items` (localStorage) | Packlisten-Einträge |
+| IndexedDB `reisedokumente` | Dokument-Binärdaten |
 
-- `ua_trip_date` - Abreisedatum und -zeit
-- `ua_pack_items` - Packlisten-Einträge
+Keine Daten werden an externe Server übertragen (außer Karten-Tiles, Geocoding und POI-Anfragen an OpenStreetMap-Dienste).
 
-**Keine Datenübertragung** an externe Server!
+## 🚀 Build & Run
 
-## 🎯 Browser-Kompatibilität
+### Android-App
 
-- ✅ Chrome/Edge 90+
-- ✅ Firefox 88+
-- ✅ Safari 14+
-- ✅ Opera 76+
+**Voraussetzungen:** Android Studio, JDK 17, Android SDK 24+
 
-## 📱 Android-Kompatibilität
-
-- **Minimum:** Android 7.0 (API 24)
-- **Target:** Android 14 (API 34)
-- **Empfohlen:** Android 8.0+ für beste Performance
-
-## 🔧 Konfiguration
-
-### Reiseziel anpassen
-
-In `index.html` können Sie das Reiseziel ändern:
-
-```html
-<span class="hero__eyebrow">Costa Brava, Spanien</span>
-<h1 id="hero-title">Pineda de Mar</h1>
-<p>Pläne schmieden, Sonne tanken und schon jetzt die Meeresbrise spüren.</p>
+```bash
+cd android-app
+./gradlew assembleDebug
+# APK: app/build/outputs/apk/debug/app-debug.apk
 ```
 
-### Hero-Bild ändern
+Oder direkt in Android Studio: **Run → Run 'app'**
 
-In `style.css` das Hintergrundbild des Hero-Bereichs anpassen:
+### Web-App lokal testen
 
-```css
-.hero {
-  background: url("IHR-BILD-URL") center/cover no-repeat;
-}
+Die Web-App liegt in `android-app/app/src/main/assets/`. Da ES Modules einen HTTP-Server benötigen:
+
+```bash
+cd android-app/app/src/main/assets
+python -m http.server 8000
+# http://localhost:8000
 ```
 
-### Farben anpassen
+## 🎨 Anpassung
 
-CSS-Custom-Properties in `style.css`:
+### Farben (`style.css`)
 
 ```css
 :root {
-  --bg: #fff9f1; /* Hintergrund */
-  --accent: #ff8a5c; /* Hauptakzentfarbe */
-  --accent-2: #08c7be; /* Sekundärfarbe */
-  --danger: #e9665b; /* Warnfarbe */
-  --text: #153243; /* Textfarbe */
-  --muted: #4a6572; /* Gedämpfter Text */
+  --bg:       #fff9f1;  /* Hintergrund */
+  --accent:   #ff8a5c;  /* Hauptakzentfarbe */
+  --accent-2: #08c7be;  /* Sekundärfarbe */
+  --danger:   #e9665b;  /* Warnfarbe */
+  --text:     #153243;  /* Textfarbe */
+  --muted:    #4a6572;  /* Gedämpfter Text */
 }
 ```
 
-## 🤝 Mitwirken
+### Hero-Bild (`style.css`)
 
-Verbesserungsvorschläge und Pull Requests sind willkommen!
-
-1. Fork des Projekts erstellen
-2. Feature Branch erstellen (`git checkout -b feature/NeuesFeature`)
-3. Änderungen committen (`git commit -m 'Neues Feature hinzugefügt'`)
-4. Branch pushen (`git push origin feature/NeuesFeature`)
-5. Pull Request öffnen
-
-## 📝 Lizenz
-
-Dieses Projekt steht unter der MIT-Lizenz.
-
-## 🎓 Lernziele & Verwendung
-
-Perfekt geeignet für:
-
-- **Einsteiger:** Vanilla JavaScript ohne Framework-Komplexität
-- **Projektunterricht:** Vollständige Web-App mit lokalem Speicher
-- **PWA-Lernen:** Basis für Progressive Web App-Erweiterungen
-- **Android-Hybrid:** WebView-Integration in nativer App
+```css
+.hero {
+  background: url("DEIN-BILD") center/cover no-repeat;
+}
+```
 
 ## 🔮 Geplante Features
 
-- [ ] PWA-Support (Service Worker, Offline-First)
+- [ ] PWA-Support (Service Worker, Web-Push)
 - [ ] Export/Import der Packliste
 - [ ] Vordefinierte Packlisten-Templates
-- [ ] Push-Benachrichtigungen (24h vor Abreise)
 - [ ] Mehrere Reisen parallel verwalten
 - [ ] Dark Mode
-- [ ] Wetter-API-Integration für Reiseziel
-
-## 📧 Kontakt
-
-Bei Fragen oder Feedback können Sie gerne ein Issue erstellen.
-
----
-
-**Viel Spaß beim Packen und eine gute Reise! ✈️🏖️**
+- [ ] Wetter-Integration für das Reiseziel
