@@ -40,12 +40,20 @@ export function showAccommodationOnMap(accommodation) {
     accommodationMarker.remove();
   }
 
-  accommodationMarker = L.marker(position)
+  const redIcon = L.divIcon({
+    html: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 36" width="24" height="36">
+      <path d="M12 0C5.4 0 0 5.4 0 12c0 9 12 24 12 24s12-15 12-24C24 5.4 18.6 0 12 0z" fill="#e9665b" stroke="#fff" stroke-width="1.5"/>
+      <circle cx="12" cy="12" r="5" fill="#fff"/>
+    </svg>`,
+    className: '',
+    iconSize: [24, 36],
+    iconAnchor: [12, 36],
+    popupAnchor: [0, -36],
+  });
+
+  accommodationMarker = L.marker(position, { icon: redIcon })
     .addTo(map)
-    .bindPopup(`
-      <strong>${name}</strong><br>
-      ${address || ""}
-    `);
+    .bindPopup(`<strong>${name}</strong><br>${address || ''}`);
 
   map.setView(position, 14);
 }
