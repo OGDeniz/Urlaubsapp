@@ -2,3 +2,7 @@
 *.apk
 *.aab
 output-metadata.json
+
+# Tools
+.agents/
+.claude/
