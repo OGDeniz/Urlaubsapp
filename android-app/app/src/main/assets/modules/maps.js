@@ -1,5 +1,6 @@
 let map = null;
 let accommodationMarker = null;
+let placeMarker = null;
 
 export function initMap() {
     const mapEl = document.getElementById('map');
@@ -51,11 +52,12 @@ export function showAccommodationOnMap(accommodation) {
 
 export function showPlaceOnMap(place) {
   if (!map) return;
-  map.setView([place.lat, place.lng], 16);
-  L.marker([place.lat, place.lng])
+  if (placeMarker) placeMarker.remove();
+  placeMarker = L.marker([place.lat, place.lng])
     .addTo(map)
     .bindPopup(`<strong>${place.name}</strong>`)
     .openPopup();
+  map.setView([place.lat, place.lng], 16);
 }
 
 export async function geocodeAddress(address) {

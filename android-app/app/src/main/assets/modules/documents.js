@@ -12,8 +12,6 @@ const CATEGORY_LABELS = {
 
 let db = null;
 
-const docListEl = document.getElementById('doc-list');
-
 // ---- IndexedDB helpers
 
 export function initDB() {
@@ -87,6 +85,7 @@ function formatDate(iso) {
 }
 
 export function renderDocuments(docs, { onDownload, onDelete }) {
+  const docListEl = document.getElementById('doc-list');
   docListEl.innerHTML = '';
 
   if (!docs.length) {

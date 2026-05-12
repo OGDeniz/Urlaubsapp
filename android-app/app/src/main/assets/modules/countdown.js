@@ -1,9 +1,3 @@
-const cdDays  = document.getElementById("cd-days");
-const cdHours = document.getElementById("cd-hours");
-const cdMins  = document.getElementById("cd-mins");
-const cdSecs  = document.getElementById("cd-secs");
-const countdownNote = document.getElementById("countdown-note");
-
 const pad = (n) => String(n).padStart(2, "0");
 
 let timer = null;
@@ -11,6 +5,12 @@ let timer = null;
 export function startCountdown(tripDate) {
   if (!(tripDate instanceof Date)) return;
   if (timer) clearInterval(timer);
+
+  const cdDays        = document.getElementById("cd-days");
+  const cdHours       = document.getElementById("cd-hours");
+  const cdMins        = document.getElementById("cd-mins");
+  const cdSecs        = document.getElementById("cd-secs");
+  const countdownNote = document.getElementById("countdown-note");
 
   function tick() {
     const now  = new Date();

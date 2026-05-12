@@ -1,5 +1,3 @@
-const listEl = document.getElementById("list");
-
 let dragSourceId = null;
 
 function clearDropIndicators() {
@@ -32,6 +30,7 @@ function handleItemDrop(event, targetId, li, onReorder) {
 }
 
 export function renderList(items, { onToggle, onRemove, onReorder }) {
+  const listEl = document.getElementById("list");
   listEl.innerHTML = "";
 
   if (!items.length) {
