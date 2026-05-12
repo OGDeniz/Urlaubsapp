@@ -1,0 +1,4 @@
+# Android Build Artifacts
+*.apk
+*.aab
+output-metadata.json
