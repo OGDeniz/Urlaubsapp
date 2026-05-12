@@ -115,9 +115,22 @@ async function fetchWikiSummary(wikipedia) {
   }
 }
 
-const poiListEl = document.getElementById('poi-results');
+export function createPlaceInfo(name, metaText) {
+  const info = document.createElement('div');
+  info.className = 'poi-info';
+  const nameEl = document.createElement('div');
+  nameEl.className = 'poi-name';
+  nameEl.textContent = name;
+  const meta = document.createElement('div');
+  meta.className = 'poi-meta';
+  meta.textContent = metaText;
+  info.appendChild(nameEl);
+  info.appendChild(meta);
+  return info;
+}
 
 export function renderPlaces(places, { onShow, onSave }, savedIds = []) {
+  const poiListEl = document.getElementById('poi-results');
   poiListEl.innerHTML = '';
 
   if (!places.length) {
@@ -132,19 +145,7 @@ export function renderPlaces(places, { onShow, onSave }, savedIds = []) {
     const li = document.createElement('li');
     li.className = 'poi-card';
 
-    const info = document.createElement('div');
-    info.className = 'poi-info';
-
-    const name = document.createElement('div');
-    name.className = 'poi-name';
-    name.textContent = place.name;
-
-    const meta = document.createElement('div');
-    meta.className = 'poi-meta';
-    meta.textContent = `${place.distance} m entfernt`;
-
-    info.appendChild(name);
-    info.appendChild(meta);
+    const info = createPlaceInfo(place.name, `${place.distance} m entfernt`);
 
     const showBtn = document.createElement('button');
     showBtn.className = 'ghost';

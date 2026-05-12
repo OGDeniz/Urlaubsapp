@@ -5,9 +5,9 @@ import { renderList, addItem, toggleItem, removeItem,
 import { initDB, addDocument, getAllDocuments,
          getBlob, deleteDocument, renderDocuments }               from './modules/documents.js';
 import { loadTrip, updateTrip }                                   from './modules/trip.js';
-import { Accommodation }                                          from './modules/accomodation.js';
+import { Accommodation }                                          from './modules/accommodation.js';
 import { initMap, showAccommodationOnMap, geocodeAddress, showPlaceOnMap } from './modules/maps.js';
-import { fetchPlaces, renderPlaces, CATEGORIES }                           from './modules/places.js';
+import { fetchPlaces, renderPlaces, createPlaceInfo, CATEGORIES }          from './modules/places.js';
 
 
 // ---- Elements
@@ -37,7 +37,6 @@ const accommodationSummary = document.getElementById("accommodation-summary");
 
 // ---- State
 let items       = [];
-let docs        = [];
 let currentTrip = loadTrip();
 let currentAccommodation = null;
 
@@ -77,7 +76,7 @@ function render() {
 }
 
 async function renderDocs() {
-  docs = await getAllDocuments();
+  const docs = await getAllDocuments();
   renderDocuments(docs, {
     onDownload: async (id) => {
       const blob = await getBlob(id);
@@ -213,23 +212,23 @@ accommodationForm.addEventListener("submit", async (e) => {
   e.preventDefault();
 
   const address = accommodationAddressInput.value.trim();
-
   const coordinates = await geocodeAddress(address);
 
+  if (!coordinates) {
+    alert('Adresse konnte nicht gefunden werden. Bitte prüfe die Eingabe – POI-Suche wird ohne Koordinaten nicht funktionieren.');
+  }
+
   currentAccommodation = new Accommodation({
-  name: accommodationNameInput.value.trim(),
-  type: accommodationTypeInput.value,
-  address,
-  checkIn: accommodationCheckInInput.value,
-  checkOut: accommodationCheckOutInput.value,
-  lat: coordinates?.lat ?? null,
-  lng: coordinates?.lng ?? null
+    name: accommodationNameInput.value.trim(),
+    type: accommodationTypeInput.value,
+    address,
+    checkIn: accommodationCheckInInput.value,
+    checkOut: accommodationCheckOutInput.value,
+    lat: coordinates?.lat ?? null,
+    lng: coordinates?.lng ?? null,
   });
 
-  currentTrip = updateTrip({
-    accommodation: currentAccommodation
-  });
-
+  currentTrip = updateTrip({ accommodation: currentAccommodation });
   renderAccommodation();
   showAccommodationOnMap(currentTrip.accommodation);
 });
@@ -293,16 +292,10 @@ function renderSavedPlaces() {
     const li = document.createElement('li');
     li.className = 'poi-card';
 
-    const info = document.createElement('div');
-    info.className = 'poi-info';
-    const name = document.createElement('div');
-    name.className = 'poi-name';
-    name.textContent = place.name;
-    const meta = document.createElement('div');
-    meta.className = 'poi-meta';
-    meta.textContent = `${CATEGORIES[place.category]?.label ?? place.category} · ${place.distance} m`;
-    info.appendChild(name);
-    info.appendChild(meta);
+    const info = createPlaceInfo(
+      place.name,
+      `${CATEGORIES[place.category]?.label ?? place.category} · ${place.distance} m`,
+    );
 
     const showBtn = document.createElement('button');
     showBtn.className = 'ghost';
