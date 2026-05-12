@@ -1,4 +1,4 @@
-const CACHE_NAME = 'urlaubsapp-v1';
+const CACHE_NAME = 'triporg-v1';
 
 const APP_SHELL = [
   './',

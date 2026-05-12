@@ -1,6 +1,6 @@
 {
-  "name": "Urlaubsapp",
-  "short_name": "Urlaub",
+  "name": "TripOrg",
+  "short_name": "TripOrg",
   "description": "Urlaubs-Countdown, Packliste & Reiseplanung",
   "start_url": "./index.html",
   "display": "standalone",
