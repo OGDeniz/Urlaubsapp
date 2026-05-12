@@ -191,10 +191,42 @@ function renderFlights() {
         flights: currentTrip.flights.filter(f => f.id !== flight.id),
       });
       renderFlights();
+      renderFlightSummary();
     });
 
     li.appendChild(info);
     li.appendChild(removeBtn);
+    listEl.appendChild(li);
+  });
+}
+
+function renderFlightSummary() {
+  const listEl = document.getElementById('flight-summary');
+  const flights = [...(currentTrip.flights || [])]
+    .filter(f => f.departureDate)
+    .sort((a, b) => a.departureDate.localeCompare(b.departureDate));
+  listEl.innerHTML = '';
+
+  if (!flights.length) return;
+
+  flights.forEach(flight => {
+    const li = document.createElement('li');
+    li.className = 'poi-card';
+
+    const name = document.createElement('div');
+    name.className = 'poi-name';
+    name.textContent = `${FLIGHT_TYPE_LABELS[flight.type] ?? flight.type}  ${flight.flightNumber}  ${flight.from} → ${flight.to}`;
+
+    const meta = document.createElement('div');
+    meta.className = 'poi-meta';
+    const parts = [];
+    if (flight.departureDate) parts.push(new Date(flight.departureDate + 'T00:00').toLocaleDateString('de-DE'));
+    if (flight.departureTime) parts.push(`Ab ${flight.departureTime}`);
+    if (flight.arrivalTime)   parts.push(`An ${flight.arrivalTime}`);
+    meta.textContent = parts.join(' · ');
+
+    li.appendChild(name);
+    li.appendChild(meta);
     listEl.appendChild(li);
   });
 }
@@ -315,6 +347,7 @@ flightForm.addEventListener("submit", (e) => {
   });
   flightForm.reset();
   renderFlights();
+  renderFlightSummary();
 });
 
 // ---- POI
@@ -443,6 +476,7 @@ document.getElementById('poi-radius').addEventListener('change', () => {
   syncCountdown(currentTrip);
   renderAccommodation();
   renderFlights();
+  renderFlightSummary();
   initMap();
   showAccommodationOnMap(currentTrip.accommodation);
   render();
